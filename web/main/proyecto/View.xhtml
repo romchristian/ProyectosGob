@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition template="/template.xhtml">
+        <f:metadata>
+            <f:viewParam name="id" value="#{proyectoController.id}"/>
+            <f:viewParam name="frase" value="#{proyectoController.fraseBusqueda}"/>
+            <f:viewAction action="#{proyectoController.cargaDatos()}"/>
+        </f:metadata>
+
+
+        <ui:define name="title">
+            <h:outputText value="Inicio"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <style>
+                .hoja{
+                    height: 100%;
+                    width: 90%;
+                    background-color: rgb(255, 255, 255);
+                    border: 1px solid #ccc;
+                    z-index: 0;
+                    margin: 0 auto 0 auto;
+                    margin-top: 20px;
+                    -webkit-border-radius: 10px;
+                    -moz-border-radius: 5px;
+                    border-radius: 5px;
+
+                    -webkit-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.20);
+                    -moz-box-shadow:    0px 5px 15px 0px rgba(0, 0, 0, 0.20);
+                    box-shadow:          0px 5px 15px 0px rgba(0, 0, 0, 0.20);
+                    padding: 20px;
+                }
+
+                .col1{
+                    text-align: left;
+                    width: 10%
+                }
+                .col2{
+                    text-align: left;
+                    width: 10%
+
+                }
+                .fondoColumna1{
+                    background-color: #953b39;
+                    font-weight: bold;
+                    color: white;
+                }
+            </style>
+
+            <p:panel >
+                <f:facet name="header" class="header"> 
+                    <div style="text-align: left;">
+                        Vista de Proyecto
+                    </div>
+                </f:facet>
+
+                <table>
+                    <tr>
+                        <td valign="bottom" align="left" width="50%">
+                            <h:form id="formBotones">
+                                <p:button value="Atras" outcome="List">
+                                    <f:param name="frase" value="#{proyectoController.fraseBusqueda}"/>
+                                </p:button>
+                                <p:button value="Editar" outcome="Edit">
+                                    <f:param name="id" value="#{proyectoController.selected.proyectosid}"/>
+                                </p:button>
+                            </h:form>
+                        </td>
+                        <td valign="bottom" align="right" width="50%">
+
+                        </td>
+                    </tr>
+                </table>
+
+            </p:panel>
+
+            <div class="hoja">
+                <h2>INFORMACIÓN DEL PROYECTO</h2>
+                <p:separator/>
+                <br/>
+
+                <p:panelGrid>
+                    <p:row>
+                        <p:column style="width: 15%; height: 40px;" class="fondoColumna1"><h:outputText value="Nro Expediente"/></p:column>
+                        <p:column style="width: 35%"><h:outputText value="#{proyectoController.selected.proyectosnroexpediente}"/></p:column>
+                        <p:column style="width: 15%" class="fondoColumna1"><h:outputText value="Origen"/></p:column>
+                        <p:column style="width: 35%"><h:outputText value="#{proyectoController.selected.proyectoscamaraorigen}"/></p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Acápite"/></p:column>
+                        <p:column colspan="3" style="font-weight: bold;"><h:outputText value="#{proyectoController.selected.proyectosnombre}"/></p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Observaciones"/></p:column>
+                        <p:column colspan="3" style="font-weight: bold;"><h:outputText value="#{proyectoController.selected.proyectosobservacion}"/></p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Archivos Adjuntos"/></p:column>
+                        <p:column colspan="3" style="font-weight: bold;">
+                            <h:panelGrid columns="8" columnClasses="col1,col2" style="border: none!important;width: 100%">
+                                <h:outputText value="Texto Original: "/>
+                                <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto1 == null or proyectoController.selected.proyectosrutatexto1.length() == 0)}"/>
+                                <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto1 == null or proyectoController.selected.proyectosrutatexto1.length() == 0)}">
+                                    <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto1}">Ver</a>
+                                </p:outputPanel>
+
+                                <h:outputText value="Texto Media Sancion"/>
+                                <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto2 == null or proyectoController.selected.proyectosrutatexto2.length() == 0)}"/>
+                                <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto2 == null or proyectoController.selected.proyectosrutatexto2.length() == 0)}">
+                                    <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto2}">Ver</a>
+                                </p:outputPanel>
+
+                                <h:outputText value="Texto Sancionado"/>
+                                <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto3 == null or proyectoController.selected.proyectosrutatexto3.length() == 0)}"/>
+                                <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto3 == null or proyectoController.selected.proyectosrutatexto3.length() == 0)}">
+                                    <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto3}">Ver</a>
+                                </p:outputPanel>
+
+                                <h:outputText value="Texto Aprobado"/>
+                                <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto4 == null or proyectoController.selected.proyectosrutatexto4.length() == 0)}"/>
+                                <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto4 == null or proyectoController.selected.proyectosrutatexto4.length() == 0)}">
+                                    <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto4}">Ver</a>
+                                </p:outputPanel>
+
+
+                            </h:panelGrid>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Objetivos"/></p:column>
+                        <p:column colspan="3" style="font-weight: bold;">
+                            <table>
+                                <p:dataGrid value="#{proyectoController.selected.proyectosobjetivosList}" var="o">
+                                    <tr>
+                                        <td>
+                                            <h:outputText value="#{o.proyectosl2objetivo}" style="font-weight: bold"/>
+                                        </td>
+                                    </tr>
+                                </p:dataGrid>
+                            </table>
+
+
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+                <br/>
+                <h2>TRÁMITES</h2>
+                <p:separator/>
+                <br/>
+                <table>
+                    <p:dataGrid value="#{proyectoController.selected.proyectostramitesList}" var="t">
+                        <tr>
+                            <td>
+                                <h:outputText value="#{t.proyectosl3tramite}" style="font-weight: bold"/>
+                            </td>
+                        </tr>
+                    </p:dataGrid>
+                </table>
+
+
+            </div>
+        </ui:define>
+    </ui:composition>
+
+</html>

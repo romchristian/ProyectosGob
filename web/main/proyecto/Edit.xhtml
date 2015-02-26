@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <ui:composition template="/template.xhtml">
+        <f:metadata>
+            <f:viewParam name="id" value="#{proyectoController.id}"/>
+            <f:viewAction action="#{proyectoController.cargaDatos()}"/>
+        </f:metadata>
+
+
+        <ui:define name="title">
+            <h:outputText value="Inicio"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <style>
+
+                * .dataList{
+                    margin: 5px;
+                }
+                .hoja{
+                    height: 100%;
+                    width: 90%;
+                    background-color: rgb(255, 255, 255);
+                    border: 1px solid #ccc;
+                    z-index: 0;
+                    margin: 0 auto 0 auto;
+                    margin-top: 20px;
+                    -webkit-border-radius: 10px;
+                    -moz-border-radius: 5px;
+                    border-radius: 5px;
+
+                    -webkit-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.20);
+                    -moz-box-shadow:    0px 5px 15px 0px rgba(0, 0, 0, 0.20);
+                    box-shadow:          0px 5px 15px 0px rgba(0, 0, 0, 0.20);
+                    padding: 20px;
+
+                }
+
+                .col1{
+                    text-align: left;
+                    width: 10%
+                }
+                .col2{
+                    text-align: left;
+                    width: 10%
+
+                }
+                .fondoColumna1{
+                    background-color: #953b39;
+                    font-weight: bold;
+                    color: white;
+                }
+
+                .ui-datalist-item{
+                    margin-top: 5px;
+                    padding: 5px;
+                }
+                /*                .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
+                                 
+                                    border-width: 0px;
+                                 
+                                }*/
+
+            </style>
+
+
+            <h:form id="formEdit">
+                <p:panel>
+                    <f:facet name="header" class="header"> 
+                        <div style="text-align: left;">
+                            Edición de Proyecto
+                        </div>
+                    </f:facet>
+
+                    <table>
+                        <tr>
+                            <td valign="bottom" align="left" width="50%">
+                                <p:button value="Atras" outcome="List">
+                                </p:button>
+
+                                <p:commandButton value="Guardar"  action="#{proyectoController.guardar()}" ajax="false"/>
+                            </td>
+                            <td valign="bottom" align="right" width="50%">
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </p:panel>
+
+
+                <div class="hoja">
+
+                    <h:panelGroup>
+
+                        <h2>INFORMACIÓN DEL PROYECTO</h2>
+                        <p:separator/>
+                        <br/>
+
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column style="width: 15%; height: 40px;" class="fondoColumna1"><h:outputText value="Nro Expediente"/></p:column>
+                                <p:column style="width: 35%"><h:outputText value="#{proyectoController.selected.proyectosnroexpediente}"/></p:column>
+                                <p:column style="width: 15%" class="fondoColumna1"><h:outputText value="Origen"/></p:column>
+                                <p:column style="width: 35%"><h:outputText value="#{proyectoController.selected.proyectoscamaraorigen}"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Acápite"/></p:column>
+                                <p:column colspan="3" style="font-weight: bold;"><h:outputText value="#{proyectoController.selected.proyectosnombre}"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Observaciones"/></p:column>
+                                <p:column colspan="3" style="font-weight: bold;"><h:outputText value="#{proyectoController.selected.proyectosobservacion}"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Archivos Adjuntos"/></p:column>
+                                <p:column colspan="3" style="font-weight: bold;">
+                                    <h:panelGrid columns="8" columnClasses="col1,col2" style="border: none!important;width: 100%">
+                                        <h:outputText value="Texto Original: "/>
+                                        <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto1 == null or proyectoController.selected.proyectosrutatexto1.length() == 0)}"/>
+                                        <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto1 == null or proyectoController.selected.proyectosrutatexto1.length() == 0)}">
+                                            <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto1}">Ver</a>
+                                        </p:outputPanel>
+
+                                        <h:outputText value="Texto Media Sancion"/>
+                                        <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto2 == null or proyectoController.selected.proyectosrutatexto2.length() == 0)}"/>
+                                        <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto2 == null or proyectoController.selected.proyectosrutatexto2.length() == 0)}">
+                                            <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto2}">Ver</a>
+                                        </p:outputPanel>
+
+                                        <h:outputText value="Texto Sancionado"/>
+                                        <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto3 == null or proyectoController.selected.proyectosrutatexto3.length() == 0)}"/>
+                                        <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto3 == null or proyectoController.selected.proyectosrutatexto3.length() == 0)}">
+                                            <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto3}">Ver</a>
+                                        </p:outputPanel>
+
+                                        <h:outputText value="Texto Aprobado"/>
+                                        <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto4 == null or proyectoController.selected.proyectosrutatexto4.length() == 0)}"/>
+                                        <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto4 == null or proyectoController.selected.proyectosrutatexto4.length() == 0)}">
+                                            <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto4}">Ver</a>
+                                        </p:outputPanel>
+
+
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Objetivos"/></p:column>
+                                <p:column colspan="3" style="font-weight: bold;">
+                                    <table>
+                                        <p:dataGrid value="#{proyectoController.selected.proyectosobjetivosList}" var="o">
+                                            <tr>
+                                                <td>
+                                                    <h:outputText value="#{o.proyectosl2objetivo}" style="font-weight: bold"/>
+                                                </td>
+                                            </tr>
+                                        </p:dataGrid>
+                                    </table>
+
+
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                        <br/>
+                        <h2>TRÁMITES</h2>
+                        <p:separator/>
+                        <br/>
+                        <br/>
+                        <h:outputText value="(Trámites anotados en la versión vieja)" style="font-style: italic;font-weight: bold"/>
+                        <p:dataList value="#{proyectoController.selected.proyectostramitesList}" var="t">
+                            <h:outputText value="#{t.proyectosl3tramite}"/>
+                        </p:dataList>
+                        <br/>
+                        <br/>
+
+                        <p:outputPanel id="panelNuevo">
+
+
+                            <p:panelGrid style="width: 100%">
+                                <p:row>
+                                    <p:column style="height: 40px;width: 15%;text-align: center"><h:outputText value="Sesión"/></p:column>
+                                    <p:column style="height: 40px;width: 15%;text-align: center"><h:outputText value="Fecha"/></p:column>
+                                    <p:column style="height: 40px;width: 25%;text-align: center"><h:outputText value="Etapa"/></p:column>
+                                    <p:column style="height: 40px;width: 45%"><h:outputText value="Resultado"/></p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="text-align: center">
+                                        <p:inputText value="#{proyectoController.tramiteNuevo.sesion}" id="nuevoSesion"/>
+                                    </p:column>
+                                    <p:column style="text-align: center">
+                                        <p:calendar locale="es" pattern="#{formato.patronFecha}" value="#{proyectoController.tramiteNuevo.fecha}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center">
+                                        <p:outputPanel>
+                                            <h:panelGrid columns="1" style="width: 100%; text-align: center">
+                                                <p:selectOneMenu var="#{proyectoController.tramiteNuevo.camara}">
+                                                    <p:ajax event="change" process="@this panelResultado" update="panelResultado"
+                                                            listener="#{proyectoController.cambiaCamara}"/>
+                                                    <f:selectItem itemLabel="CAMARA DE DIPUTADOS" itemValue="CAMARA DE DIPUTADOS"/>
+                                                    <f:selectItem itemLabel="CAMARA DE SENADORES" itemValue="CAMARA DE SENADORES"/>
+                                                </p:selectOneMenu>
+
+                                                <p:inputText value="#{proyectoController.tramiteNuevo.titulo}" placeholder="Ej.: Primer trámite Constitucional" style="width: 95%;"/>
+                                                <p:separator style="margin-top: 5px; margin-bottom: 5px;"/>
+                                                <p:inputText value="#{proyectoController.tramiteNuevo.subtitulo}" placeholder="Ej.: Ingreso de Expediente" style="width: 95%;"/>
+                                            </h:panelGrid>
+                                        </p:outputPanel>
+                                    </p:column>
+                                    <p:column style="vertical-align: top">
+                                        <p:outputPanel style="vertical-align: top">
+                                            <h:panelGrid columns="2">
+                                                <h:outputText value="Tipo: "/>
+                                                <p:selectOneMenu value="#{proyectoController.tramiteNuevo.tipoResultado}">
+                                                    <p:ajax event="change" process="@this panelResultado" update="panelResultado"
+                                                            listener="#{proyectoController.subjectSelectionChanged}"/>
+                                                    <f:selectItems value="#{productorEnums.obtTiposResultados()}"/>
+                                                </p:selectOneMenu>
+                                            </h:panelGrid>
+
+                                            <p:panel id="panelResultado" styleClass="panelResultado">
+                                                <p:outputPanel id="panelComision" rendered="#{proyectoController.tramiteNuevo.tipoResultado == 'GIRADO_A'}" style="border: none">
+                                                    Girado a:
+                                                    <p:autoComplete value="#{proyectoController.comisionElegida}"  size="50" 
+                                                                    id="autoCompleteComision"
+                                                                    completeMethod="#{autoCompleteComision.completar}" widgetVar="autoCompleteComision"
+                                                                    forceSelection="true" converter="comisionConverter" var="c" itemValue="#{c}" itemLabel="#{c.nombre}">
+
+                                                        <p:ajax event="itemSelect" update="panelResultado" listener="#{proyectoController.addComision()}"
+                                                                oncomplete="$(function(){PrimeFaces.focus('formEdit:autoCompleteComision');});"/>
+
+                                                    </p:autoComplete>
+                                                    <!--                                                <p:commandButton value="+" action="{proyectoController.addComision()}" update="panelResultado" />-->
+
+
+                                                    <p:dataGrid value="#{proyectoController.tramiteNuevo.comisiones}" var="c" columns="1">
+
+                                                        <div style="width: 100%">
+                                                            <div style="float: left;vertical-align: top">
+                                                                <h:outputText value="#{c.nombre}"/>
+                                                            </div>
+                                                            <div style="float: right">
+                                                                <p:commandLink value="X" action="#{proyectoController.quitarComision(c)}"
+                                                                               update="@(.panelResultado)"
+                                                                               oncomplete="$(function(){PrimeFaces.focus('formEdit:autoCompleteComision');});"/>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                    </p:dataGrid>
+
+
+
+                                                </p:outputPanel>
+
+                                                <p:outputPanel id="panelDictamen" rendered="#{proyectoController.tramiteNuevo.tipoResultado == 'TEXTO_DICTAMEN'}" styleClass="panelDictamen">
+                                                    <p:autoComplete value="#{proyectoController.tramiteNuevo.comisionDictamen}" size="50"
+                                                                    completeMethod="#{autoCompleteComision.completar}"
+                                                                    id="autoCompleteComisionDictamen"
+                                                                    forceSelection="true" converter="comisionConverter" var="c" itemValue="#{c}" itemLabel="#{c.nombre}">
+
+
+                                                        <p:ajax event="itemSelect" update="panelResultado"
+                                                                oncomplete="$(function(){PrimeFaces.focus('formEdit:autoCompleteComisionDictamen');});"/>
+
+                                                    </p:autoComplete>
+
+
+
+                                                    <p:commandButton value="Subir" action="#{proyectoController.generarNombreArchivo()}"
+                                                                     update="panelDisplayDictamen"
+                                                                     oncomplete="PF('dialogoArchivoDictamen').show();"/>
+
+                                                    <p:dialog widgetVar="dialogoArchivoDictamen" style="width: 600px;">
+                                                        <p:panel id="panelDisplayDictamen">
+                                                            <iframe src="${initParam.serverDir}FileUpload/?nombre=#{proyectoController.nombreArchivo}" width="100%" height="100%" style="border: none; overflow: hidden">
+
+                                                            </iframe>
+                                                            <p:commandButton value="Hecho" action="#{proyectoController.guardaNombreArchivo()}" oncomplete="PF('dialogoArchivoDictamen').hide();"
+                                                                             update="panelResultado"/>
+                                                        </p:panel>
+                                                    </p:dialog>
+
+                                                    <p:panel rendered="#{not (empty proyectoController.tramiteNuevo.resultadoLink or proyectoController.tramiteNuevo.resultadoLink == null)}">
+                                                        <a href="${initParam.serverDir}FileUpload/DownloadServlet?nombre=#{proyectoController.tramiteNuevo.resultadoLink}">
+                                                            <div>
+                                                                <table>
+                                                                    <tr>
+                                                                        <td valign="middle">
+                                                                            <img src="#{resource['img/file.png']}"/>
+                                                                        </td>
+                                                                        <td valign="middle">
+                                                                            #{proyectoController.tramiteNuevo.comisionDictamen.nombre}
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                            </div>
+
+                                                        </a>
+                                                    </p:panel>
+                                                    <p:panel rendered="#{(proyectoController.tramiteNuevo.comisionDictamen != null and proyectoController.tramiteNuevo.resultadoLink == null)}">
+                                                        #{proyectoController.tramiteNuevo.comisionDictamen.nombre}
+                                                    </p:panel>
+
+                                                </p:outputPanel>
+                                                <p:outputPanel id="panelSancion" rendered="#{(proyectoController.tramiteNuevo.tipoResultado == 'TEXTO_MEDIA_SANCION'
+                                                                                             or proyectoController.tramiteNuevo.tipoResultado == 'TEXTO_SANCION' 
+                                                                                             or proyectoController.tramiteNuevo.tipoResultado == 'TEXTO_APROBADO')}">
+
+
+
+                                                    <p:commandButton value="Subir" action="#{proyectoController.generarNombreArchivo()}"
+                                                                     update="panelDisplayDictamen"
+                                                                     oncomplete="PF('dialogoArchivoSancion').show();"/>
+
+                                                    <p:dialog widgetVar="dialogoArchivoSancion" style="width: 600px;">
+                                                        <p:panel id="panelDisplaySancion">
+                                                            <iframe src="${initParam.serverDir}FileUpload/?nombre=#{proyectoController.nombreArchivo}" width="100%" height="100%" style="border: none; overflow: hidden">
+
+                                                            </iframe>
+                                                            <p:commandButton value="Hecho" action="#{proyectoController.guardaNombreArchivo()}" oncomplete="PF('dialogoArchivoSancion').hide();"
+                                                                             update="panelResultado"/>
+                                                        </p:panel>
+                                                    </p:dialog>
+
+
+                                                    <p:panel rendered="#{not (empty proyectoController.tramiteNuevo.resultadoLink or proyectoController.tramiteNuevo.resultadoLink == null)}">
+                                                        <a href="${initParam.serverDir}FileUpload/DownloadServlet?nombre=#{proyectoController.tramiteNuevo.resultadoLink}">
+                                                            <div>
+                                                                <table>
+                                                                    <tr>
+                                                                        <td valign="middle">
+                                                                            <img src="#{resource['img/file.png']}"/>
+                                                                        </td>
+                                                                        <td valign="middle">
+                                                                            #{proyectoController.tramiteNuevo.tipoResultado}
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </a>
+                                                    </p:panel>
+
+
+                                                </p:outputPanel>
+
+                                                <p:outputPanel id="panelOtro" rendered="#{proyectoController.tramiteNuevo.tipoResultado == 'OTRO'}">
+                                                    <p:inputTextarea cols="50" rows="3" placeholder="Ej.: POSTERGARDO .. "
+                                                                     value="#{proyectoController.tramiteNuevo.resultado}"/>
+                                                </p:outputPanel>
+                                            </p:panel>
+
+
+
+
+                                        </p:outputPanel>
+
+                                    </p:column>
+                                </p:row>
+
+
+                            </p:panelGrid>
+
+                        </p:outputPanel>
+
+                        <p:commandButton value="Agregar" action="#{proyectoController.addTramite()}" update="tramites panelNuevo" 
+                                         oncomplete="$(function(){PrimeFaces.focus('formEdit:nuevoSesion');});"/>
+
+                        <p:dataTable id="tramites" value="#{proyectoController.selected.tramites}" var="t">
+                            <p:column headerText="Sessión">
+                                <h:outputText value="#{t.sesion}"/>
+                            </p:column>
+                            <p:column headerText="Fecha">
+                                <h:outputText value="#{t.fecha}">
+                                    <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Etapa" style="text-align: center">
+                                <h:panelGroup style="text-align: center">
+
+
+                                    <div style="background-color: #5bc0de;-webkit-border-radius: 3px;
+                                         -moz-border-radius: 3px;
+                                         border-radius: 3px; width: 60%;padding: 3px;border: 1px solid #0044cc;text-align: center; margin: 0 auto 0 auto;">
+                                        <h:outputText value="#{t.camara}" style="font-weight: bold;color:#0044cc; "/>  
+                                    </div>
+
+                                    <br/>
+                                    <h:outputText value="#{t.titulo}" style="font-weight: bold"/>
+                                    <p:separator style="margin-top: 5px; margin-bottom: 5px;"/>
+                                    <h:outputText value="#{t.subtitulo}" style="font-weight: bold; font-style: italic;color: #888"/>
+
+                                </h:panelGroup>
+
+                            </p:column>
+                            <p:column headerText="Resultado">
+
+                                <p:outputPanel id="panelComision" rendered="#{t.tipoResultado == 'GIRADO_A'}" style="border: none">
+                                    <p:panelGrid columns="1">
+                                        <h:outputText value="PASA A COMISIÓN:"/>
+
+                                        <h:panelGroup>
+                                            <ul style="list-style-type: circle; padding: 15px;margin-left: 15px">
+                                                <ui:repeat value="#{t.comisiones}" var="c">
+                                                    <li style="margin-bottom: 3px">#{c.nombre}</li>
+                                                </ui:repeat>
+                                            </ul>
+                                        </h:panelGroup>
+
+                                    </p:panelGrid>
+                                </p:outputPanel>
+
+                                <p:outputPanel id="panelDictamen" rendered="#{t.tipoResultado == 'TEXTO_DICTAMEN'}" styleClass="panelDictamen">
+                                    <a href="${initParam.serverDir}FileUpload/DownloadServlet?nombre=#{t.resultadoLink}">
+                                        <div>
+                                            <table style="border-width: 0px">
+                                                <tr style="border-width: 0px">
+                                                    <td valign="middle" style="border-width: 0px" width="10%">
+                                                        <img src="#{resource['img/file.png']}"/>
+                                                    </td>
+                                                    <td valign="middle" style="border-width: 0px" width="90%" align="left">
+                                                        #{t.comisionDictamen.nombre}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </a>
+                                </p:outputPanel>
+
+                                <p:outputPanel id="panelSancion" rendered="#{(t.tipoResultado == 'TEXTO_MEDIA_SANCION'
+                                                                             or t.tipoResultado == 'TEXTO_SANCION' 
+                                                                             or t.tipoResultado == 'TEXTO_APROBADO')}">
+                                    <a href="${initParam.serverDir}FileUpload/DownloadServlet?nombre=#{t.resultadoLink}">
+                                        <div>
+                                            <table style="border-width: 0px">
+                                                <tr style="border-width: 0px">
+                                                    <td valign="middle" style="border-width: 0px" width="10%">
+                                                        <img src="#{resource['img/file.png']}"/>
+                                                    </td>
+                                                    <td valign="middle" style="border-width: 0px" width="90%" align="left">
+                                                        #{t.tipoResultado}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </a>
+                                </p:outputPanel>
+                                <p:outputPanel id="panelOtro" rendered="#{t.tipoResultado == 'OTRO'}">
+                                    <h:outputText value="#{t.resultado}"/>
+                                </p:outputPanel>
+                            </p:column>
+                        </p:dataTable>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+
+        </ui:define>
+    </ui:composition>
+
+</html>

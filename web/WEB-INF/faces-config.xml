@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
+    </factory>
+    
+    <converter>
+        <converter-id>comisionConverter</converter-id>
+        <converter-for-class>py.com.palermo.proyectosgob.persistencia.Comision</converter-for-class>
+        <converter-class>py.com.palermo.proyectosgob.web.ComisionConverter</converter-class>
+    </converter>
+    
+</faces-config>
