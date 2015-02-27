@@ -63,15 +63,25 @@
                     margin-top: 5px;
                     padding: 5px;
                 }
-                /*                .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
-                                 
-                                    border-width: 0px;
-                                 
-                                }*/
+
 
                 .btnPlus {
                     background-image: url('#{resource['img/plus.png']}');
                     width: 64px;
+                }
+                .ui-widget-content {
+                    border: 0px solid #444444;
+                }
+
+                .ui-panelgrid .ui-panelgrid-cell {
+                    border-width: 1px;
+                    border-style: solid;
+                    border-color: #bbb;
+
+                }
+
+                .ui-datatable tbody td {
+                    border-color: #bbb;
                 }
             </style>
 
@@ -109,70 +119,92 @@
                         <p:separator/>
                         <br/>
 
-                        <p:panelGrid>
+                        <p:panelGrid style="width: 100%">
                             <p:row>
                                 <p:column style="width: 15%; height: 40px;" class="fondoColumna1"><h:outputText value="Nro Expediente"/></p:column>
-                                <p:column style="width: 35%"><h:outputText value="#{proyectoController.selected.proyectosnroexpediente}"/></p:column>
-                                <p:column style="width: 15%" class="fondoColumna1"><h:outputText value="Origen"/></p:column>
-                                <p:column style="width: 35%"><h:outputText value="#{proyectoController.selected.proyectoscamaraorigen}"/></p:column>
+                                <p:column style="width: 35%;font-weight: bold;"><p:inputText value="#{proyectoController.selected.proyectosnroexpediente}" style="font-weight: bold"/></p:column>
+                                <p:column style="width: 15%" class="fondoColumna1"><h:outputText value="Iniciativa"/></p:column>
+                                <p:column style="width: 35%">
+                                    <p:selectOneMenu value="#{proyectoController.selected.proyectosiniciativa}">
+                                        <f:selectItem itemLabel="Seleccione una Iniciativa" itemValue=""/>
+                                        <f:selectItem itemLabel="Poder Legislativo" itemValue="Poder Legislativo"/>
+                                        <f:selectItem itemLabel="Poder Judicial" itemValue="Poder Judicial"/>
+                                        <f:selectItem itemLabel="Poder Ejecutivo" itemValue="Poder Ejecutivo"/>
+                                        <f:selectItem itemLabel="Popular" itemValue="Popular"/>
+                                    </p:selectOneMenu>
+                                </p:column>
                             </p:row>
                             <p:row>
                                 <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Acápite"/></p:column>
-                                <p:column colspan="3" style="font-weight: bold;"><h:outputText value="#{proyectoController.selected.proyectosnombre}"/></p:column>
+                                <p:column colspan="3" style="font-weight: bold;"><h:inputTextarea value="#{proyectoController.selected.proyectosnombre}"  rows="4" style="width: 99%;padding: 5px;font-weight: bold"/></p:column>
                             </p:row>
+
                             <p:row>
-                                <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Observaciones"/></p:column>
-                                <p:column colspan="3" style="font-weight: bold;"><h:outputText value="#{proyectoController.selected.proyectosobservacion}"/></p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Archivos Adjuntos"/></p:column>
+                                <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Texto Original"/></p:column>
                                 <p:column colspan="3" style="font-weight: bold;">
-                                    <h:panelGrid columns="8" columnClasses="col1,col2" style="border: none!important;width: 100%">
-                                        <h:outputText value="Texto Original: "/>
-                                        <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto1 == null or proyectoController.selected.proyectosrutatexto1.length() == 0)}"/>
-                                        <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto1 == null or proyectoController.selected.proyectosrutatexto1.length() == 0)}">
-                                            <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto1}">Ver</a>
-                                        </p:outputPanel>
-
-                                        <h:outputText value="Texto Media Sancion"/>
-                                        <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto2 == null or proyectoController.selected.proyectosrutatexto2.length() == 0)}"/>
-                                        <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto2 == null or proyectoController.selected.proyectosrutatexto2.length() == 0)}">
-                                            <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto2}">Ver</a>
-                                        </p:outputPanel>
-
-                                        <h:outputText value="Texto Sancionado"/>
-                                        <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto3 == null or proyectoController.selected.proyectosrutatexto3.length() == 0)}"/>
-                                        <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto3 == null or proyectoController.selected.proyectosrutatexto3.length() == 0)}">
-                                            <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto3}">Ver</a>
-                                        </p:outputPanel>
-
-                                        <h:outputText value="Texto Aprobado"/>
-                                        <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto4 == null or proyectoController.selected.proyectosrutatexto4.length() == 0)}"/>
-                                        <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto4 == null or proyectoController.selected.proyectosrutatexto4.length() == 0)}">
-                                            <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto4}">Ver</a>
-                                        </p:outputPanel>
 
 
-                                    </h:panelGrid>
+                                    <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto1 == null or proyectoController.selected.proyectosrutatexto1.length() == 0)}"/>
+                                    <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto1 == null or proyectoController.selected.proyectosrutatexto1.length() == 0)}">
+
+                                        <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto1}">
+                                            <div>
+                                                <table>
+                                                    <tr>
+                                                        <td valign="middle">
+                                                            <img src="#{resource['img/file.png']}"/>
+                                                        </td>
+                                                        <td valign="middle">
+                                                            VER
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </a>
+
+                                    </p:outputPanel>
+                                    <p:commandButton value="Subir" style="margin-left: 20px"/>
                                 </p:column>
                             </p:row>
 
                             <p:row>
                                 <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Objetivos"/></p:column>
                                 <p:column colspan="3" style="font-weight: bold;">
-                                    <table>
-                                        <p:dataGrid value="#{proyectoController.selected.proyectosobjetivosList}" var="o">
+
+                                    <p:outputPanel style="padding: 0px!important;">
+
+                                        <table width="100%" style="margin: 0;padding: 0">
                                             <tr>
-                                                <td>
-                                                    <h:outputText value="#{o.proyectosl2objetivo}" style="font-weight: bold"/>
+                                                <td width="100%">
+                                                    <h:inputTextarea value="" style="font-weight: bold; width: 90%;padding: 5px" cols="2" id="nuevoObjetivo"/>
+                                                    <p:watermark for="nuevoObjetivo" value="Ingrese un nuevo objetivo."/>
+                                                </td>
+                                                <td align="center">
+                                                    <p:graphicImage library="img" name="plus.png" width="32" height="32"/>
                                                 </td>
                                             </tr>
-                                        </p:dataGrid>
-                                    </table>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <p:separator style="margin-bottom: 5px; margin-top: 5px"/>
+                                                </td>
+                                            </tr>
+                                            <ui:repeat value="#{proyectoController.selected.proyectosobjetivosList}" var="o">
+                                                <tr>
+                                                    <td width="100%">
+                                                        <h:inputTextarea value="#{o.proyectosl2objetivo}" style="font-weight: bold; width: 90%;padding: 5px" cols="3"/><br/>
+                                                    </td>
+                                                    <td align="center">
+                                                        <p:commandLink value="X"/>
+                                                    </td>
+                                                </tr>
+                                            </ui:repeat>
+                                        </table>
 
+                                    </p:outputPanel>
 
                                 </p:column>
                             </p:row>
+
                         </p:panelGrid>
 
                         <br/>
@@ -185,18 +217,45 @@
                             <h:outputText value="#{t.proyectosl3tramite}"/>
                         </p:dataList>
                         <br/>
+                        <h:panelGrid columns="6">
+                            <h:outputText value="Texto Media Sancion"/>
+                            <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto2 == null or proyectoController.selected.proyectosrutatexto2.length() == 0)}"/>
+                            <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto2 == null or proyectoController.selected.proyectosrutatexto2.length() == 0)}">
+                                <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto2}">Ver</a>
+                            </p:outputPanel>
+
+                            <h:outputText value="Texto Sancionado"/>
+                            <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto3 == null or proyectoController.selected.proyectosrutatexto3.length() == 0)}"/>
+                            <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto3 == null or proyectoController.selected.proyectosrutatexto3.length() == 0)}">
+                                <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto3}">Ver</a>
+                            </p:outputPanel>
+
+                            <h:outputText value="Texto Aprobado"/>
+                            <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto4 == null or proyectoController.selected.proyectosrutatexto4.length() == 0)}"/>
+                            <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto4 == null or proyectoController.selected.proyectosrutatexto4.length() == 0)}">
+                                <a target="_blank" href="http://54.207.21.180:31080/FileUpload/DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto4}">Ver</a>
+                            </p:outputPanel>
+                        </h:panelGrid>
+
+                        <p:panelGrid columns="2">
+                            <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Observaciones"/></p:column>
+                            <p:column colspan="3" style="font-weight: bold;"><h:outputText value="#{proyectoController.selected.proyectosobservacion}"/></p:column>
+                        </p:panelGrid>
+
+                        <br/>
                         <br/>
 
                         <p:outputPanel id="panelNuevo">
 
 
                             <p:panelGrid style="width: 100%">
+
                                 <p:row>
                                     <p:column style="height: 40px;width: 15%;text-align: center" class="fondoColumna1"><h:outputText value="Sesión"/></p:column>
                                     <p:column style="height: 40px;width: 15%;text-align: center" class="fondoColumna1"><h:outputText value="Fecha"/></p:column>
                                     <p:column style="height: 40px;width: 25%;text-align: center" class="fondoColumna1"><h:outputText value="Etapa"/></p:column>
                                     <p:column style="height: 40px;width: 40%" class="fondoColumna1"><h:outputText value="Resultado"/></p:column>
-                                    <p:column style="height: 40px;width: 5%" class="fondoColumna1"></p:column>
+                                    <p:column style="height: 40px;" class="fondoColumna1"></p:column>
                                 </p:row>
 
                                 <p:row>
@@ -245,8 +304,6 @@
                                                                 oncomplete="$(function(){PrimeFaces.focus('formEdit:autoCompleteComision');});"/>
 
                                                     </p:autoComplete>
-                                                    <!--                                                <p:commandButton value="+" action="{proyectoController.addComision()}" update="panelResultado" />-->
-
 
                                                     <p:dataGrid value="#{proyectoController.tramiteNuevo.comisiones}" var="c" columns="1">
 
@@ -390,12 +447,12 @@
                                         </p:outputPanel>
 
                                     </p:column>
-                                    <p:column style="height: 40px;width: 5%">
+                                    <p:column style="height: 40px;">
                                         <p:commandLink action="#{proyectoController.addTramite()}" update="tramites panelNuevo" 
-                                                         oncomplete="$(function(){PrimeFaces.focus('formEdit:nuevoSesion');});">
-                                            <p:graphicImage library="img" name="plus.png" width="64" height="64"/>
+                                                       oncomplete="$(function(){PrimeFaces.focus('formEdit:nuevoSesion');});">
+                                            <p:graphicImage library="img" name="plus.png" width="48" height="48"/>
                                         </p:commandLink>
-                                        
+
                                     </p:column>
                                 </p:row>
 

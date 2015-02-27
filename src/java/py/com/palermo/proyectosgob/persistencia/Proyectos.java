@@ -100,6 +100,8 @@ public class Proyectos implements Serializable {
     @Size(max = 20)
     @Column(name = "proyectosusuario")
     private String proyectosusuario;
+    @Column(name = "proyectosiniciativa")
+    private String proyectosiniciativa;
     @JoinColumn(name = "materiasid", referencedColumnName = "materiasid")
     @ManyToOne
     private Materias materiasid;
@@ -131,6 +133,15 @@ public class Proyectos implements Serializable {
         this.tramites = tramites;
     }
 
+    public String getProyectosiniciativa() {
+        return proyectosiniciativa;
+    }
+
+    public void setProyectosiniciativa(String proyectosiniciativa) {
+        this.proyectosiniciativa = proyectosiniciativa;
+    }
+
+    
     
     
     public Short getProyectosid() {
