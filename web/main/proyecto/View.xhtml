@@ -98,10 +98,7 @@
                         <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Acápite"/></p:column>
                         <p:column colspan="3" style="font-weight: bold;"><h:outputText value="#{proyectoController.selected.proyectosnombre}"/></p:column>
                     </p:row>
-                    <p:row>
-                        <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Observaciones"/></p:column>
-                        <p:column colspan="3" style="font-weight: bold;"><h:outputText value="#{proyectoController.selected.proyectosobservacion}"/></p:column>
-                    </p:row>
+
                     <p:row>
                         <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Archivos Adjuntos"/></p:column>
                         <p:column colspan="3" style="font-weight: bold;">
@@ -134,7 +131,14 @@
                             </h:panelGrid>
                         </p:column>
                     </p:row>
-
+                      <p:row>
+                        <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1">
+                            <h:outputText value="Observación"/>
+                        </p:column>
+                        <p:column colspan="3">
+                            <h:outputText value="#{proyectoController.selected.proyectosobservacion}"/>
+                        </p:column>
+                    </p:row>
                     <p:row>
                         <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Objetivos"/></p:column>
                         <p:column colspan="3" style="font-weight: bold;">
@@ -151,22 +155,130 @@
 
                         </p:column>
                     </p:row>
+                     
+                  
                 </p:panelGrid>
 
                 <br/>
                 <h2>TRÁMITES</h2>
                 <p:separator/>
-                <br/>
-                <table>
-                    <p:dataGrid value="#{proyectoController.selected.proyectostramitesList}" var="t">
-                        <tr>
-                            <td>
-                                <h:outputText value="#{t.proyectosl3tramite}" style="font-weight: bold"/>
-                            </td>
-                        </tr>
-                    </p:dataGrid>
-                </table>
 
+                <br/>
+                <h:outputText value="(Trámites anotados en la versión vieja)" style="font-style: italic;font-weight: bold"/>
+                <h:panelGroup>
+                    <ul style="list-style-type: circle; padding: 15px;margin-left: 15px">
+                        <ui:repeat value="#{proyectoController.selected.proyectostramitesList}" var="t">
+                            <li style="margin-bottom: 3px">#{t.proyectosl3tramite}</li>
+                        </ui:repeat>
+                    </ul>
+                </h:panelGroup>
+
+
+                <br/>
+                <p:separator/>
+                <br/>
+
+
+                <p:dataTable id="tramites" value="#{proyectoController.selected.tramites}" var="t">
+                    <p:column headerText="Sesión">
+                        <h:outputText value="#{t.sesion}"/>
+                    </p:column>
+                    <p:column headerText="Fecha">
+                        <h:outputText value="#{t.fecha}">
+                            <f:convertDateTime locale="#{formato.locale}" pattern="#{formato.patronFecha}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Etapa" style="text-align: center">
+                        <h:panelGroup style="text-align: center">
+
+                            <p:outputPanel rendered="#{t.camara == 'CAMARA DE SENADORES'}">
+                                <div style="background-color: #F6D8CE;-webkit-border-radius: 3px;
+                                     -moz-border-radius: 3px;
+                                     border-radius: 3px; width: 60%;padding: 3px;border: 1px solid red;text-align: center; margin: 0 auto 0 auto;">
+                                    <h:outputText value="#{t.camara}" style="font-weight: bold;color:red; "/>  
+                                </div>
+                            </p:outputPanel>
+                            <p:outputPanel rendered="#{t.camara == 'CAMARA DE DIPUTADOS'}">
+                                <div style="background-color: #CEE3F6;-webkit-border-radius: 3px;
+                                     -moz-border-radius: 3px;
+                                     border-radius: 3px; width: 60%;padding: 3px;border: 1px solid #0044cc;text-align: center; margin: 0 auto 0 auto;">
+                                    <h:outputText value="#{t.camara}" style="font-weight: bold;color:#0044cc; "/>  
+                                </div>
+                            </p:outputPanel>
+
+
+                            <br/>
+                            <h:outputText value="#{t.titulo}" style="font-weight: bold"/>
+                            <p:separator style="margin-top: 5px; margin-bottom: 5px;"/>
+                            <h:outputText value="#{t.subtitulo}" style="font-weight: bold; font-style: italic;color: #888"/>
+
+                        </h:panelGroup>
+
+                    </p:column>
+                    <p:column headerText="Resultado">
+
+                        <p:outputPanel  rendered="#{t.tipoResultado == 'GIRADO_A'}" style="border: none">
+                            <p:panelGrid columns="1">
+                                <h:outputText value="PASA A COMISIÓN:"/>
+
+                                <h:panelGroup>
+                                    <ul style="list-style-type: circle; padding: 15px;margin-left: 15px">
+                                        <ui:repeat value="#{t.comisiones}" var="c">
+                                            <li style="margin-bottom: 3px">#{c.nombre}</li>
+                                        </ui:repeat>
+                                    </ul>
+                                </h:panelGroup>
+
+                            </p:panelGrid>
+                        </p:outputPanel>
+
+
+                        <p:outputPanel  rendered="#{t.tipoResultado == 'DICTAMEN_COMISION'}" styleClass="panelDictamenComision">
+                            <h:outputText value="#{t.comisionDictamen.nombre}" style="font-weight: bold"/>
+                            <p:separator style="margin-top: 5px; margin-bottom: 5px;"/>
+                            <h:outputText value="SENTIDO: #{t.resultado}"/>
+                        </p:outputPanel>
+
+                        <p:outputPanel  rendered="#{t.tipoResultado == 'TEXTO_DICTAMEN'}" styleClass="panelDictamen">
+                            <a href="${initParam.serverDir}DownloadServlet?nombre=#{t.resultadoLink}">
+                                <div>
+                                    <table style="border-width: 0px">
+                                        <tr style="border-width: 0px">
+                                            <td valign="middle" style="border-width: 0px" width="10%">
+                                                <img src="#{resource['img/file.png']}"/>
+                                            </td>
+                                            <td valign="middle" style="border-width: 0px" width="90%" align="left">
+                                                #{t.comisionDictamen.nombre}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </a>
+                        </p:outputPanel>
+
+                        <p:outputPanel  rendered="#{(t.tipoResultado == 'TEXTO_MEDIA_SANCION'
+                                                    or t.tipoResultado == 'TEXTO_SANCION' 
+                                                    or t.tipoResultado == 'TEXTO_APROBADO')}">
+                            <a href="${initParam.serverDir}DownloadServlet?nombre=#{t.resultadoLink}">
+                                <div>
+                                    <table style="border-width: 0px">
+                                        <tr style="border-width: 0px">
+                                            <td valign="middle" style="border-width: 0px" width="10%">
+                                                <img src="#{resource['img/file.png']}"/>
+                                            </td>
+                                            <td valign="middle" style="border-width: 0px" width="90%" align="left">
+                                                #{t.tipoResultado}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </a>
+                        </p:outputPanel>
+                        <p:outputPanel  rendered="#{t.tipoResultado == 'OTRO'}">
+                            <h:outputText value="#{t.resultado}"/>
+                        </p:outputPanel>
+                    </p:column>
+                </p:dataTable>
 
             </div>
         </ui:define>
