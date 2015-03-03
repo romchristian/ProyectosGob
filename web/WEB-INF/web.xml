@@ -41,6 +41,10 @@
         <error-code>404</error-code>
         <location>/main/home.xhtml</location>
     </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errorSQL.xhtml</location>
+    </error-page>
     
     <security-constraint>
         <display-name>ConstraintHome</display-name>

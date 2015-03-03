@@ -6,6 +6,8 @@
 package py.com.palermo.proyectosgob.persistencia;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -34,6 +36,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Proyectos.findAll", query = "SELECT p FROM Proyectos p")})
 public class Proyectos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -115,10 +118,29 @@ public class Proyectos implements Serializable {
     private List<Proyectosproyectistas> proyectosproyectistasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyectos")
     private List<Proyectosestamentos> proyectosestamentosList;
-    @OneToMany(mappedBy = "proyecto",cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Tramite> tramites;
+    @OneToMany(mappedBy = "proyecto",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<Objetivo> objetivos;
+    private Boolean favorito;
 
     public Proyectos() {
+    }
+
+    public List<Objetivo> getObjetivos() {
+        return objetivos;
+    }
+
+    public void setObjetivos(List<Objetivo> objetivos) {
+        this.objetivos = objetivos;
+    }
+
+    public Boolean getFavorito() {
+        return favorito;
+    }
+
+    public void setFavorito(Boolean favorito) {
+        this.favorito = favorito;
     }
 
     public Proyectos(Short proyectosid) {
@@ -141,9 +163,6 @@ public class Proyectos implements Serializable {
         this.proyectosiniciativa = proyectosiniciativa;
     }
 
-    
-    
-    
     public Short getProyectosid() {
         return proyectosid;
     }
@@ -353,6 +372,24 @@ public class Proyectos implements Serializable {
     }
 
     public List<Proyectosobjetivos> getProyectosobjetivosList() {
+
+        if (proyectosobjetivosList != null) {
+//            Comparator<Proyectosobjetivos> comp = new Comparator<Proyectosobjetivos>() {
+//
+//                @Override
+//                public int compare(Proyectosobjetivos o1, Proyectosobjetivos o2) {
+//                    return o1.getProyectosl2objetivo().compareToIgnoreCase(o2.getProyectosl2objetivo()) > 0 ? 1 : -1;
+//                }
+//            };
+//
+//            Collections.sort(proyectosobjetivosList, comp);
+
+            int i = 0;
+            for (Proyectosobjetivos o : proyectosobjetivosList) {
+                o.setIndice(i);
+                i++;
+            }
+        }
         return proyectosobjetivosList;
     }
 
@@ -408,5 +445,5 @@ public class Proyectos implements Serializable {
     public String toString() {
         return "py.com.palermo.proyectosgob.persistencia.Proyectos[ proyectosid=" + proyectosid + " ]";
     }
-    
+
 }

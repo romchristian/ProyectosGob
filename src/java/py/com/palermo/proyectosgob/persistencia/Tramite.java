@@ -6,8 +6,10 @@
 package py.com.palermo.proyectosgob.persistencia;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 /**
  *
@@ -45,11 +48,63 @@ public class Tramite implements Serializable {
     private String resultadoLink;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Comision> comisiones;
+    @Transient
+    private boolean editar = false;
+    @Transient
+    private Comision comisionElegida;
+    @Transient
+    private String nombreArchivo;
 
     public Tramite() {
-        tipoResultado = TipoResultado.TEXTO_DICTAMEN;
+        tipoResultado = TipoResultado.GIRADO_A;
+    }
+
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
+     public void generarNombreArchivo() {
+        UUID uuid = UUID.randomUUID();
+        nombreArchivo = proyecto.getProyectosnroexpediente() + "_" + getTipoResultado() + "_" + uuid.toString();
+    }
+     
+     public void guardaNombreArchivo() {
+        setResultadoLink(nombreArchivo);
+        nombreArchivo = null;
     }
     
+    public boolean isEditar() {
+        return editar;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
+    }
+
+    public Comision getComisionElegida() {
+        return comisionElegida;
+    }
+
+    public void setComisionElegida(Comision comisionElegida) {
+        this.comisionElegida = comisionElegida;
+    }
+      
+    
+    public void addComision() {
+        if (getComisiones() == null) {
+            setComisiones(new ArrayList<Comision>());
+        }
+        getComisiones().add(comisionElegida);
+        comisionElegida = null;
+    }
+    
+    public void quitarComision(Comision c) {
+        getComisiones().remove(c);
+    }
 
     public Long getId() {
         return id;

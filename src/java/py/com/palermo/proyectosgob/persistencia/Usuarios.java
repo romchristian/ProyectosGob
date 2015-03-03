@@ -67,6 +67,8 @@ public class Usuarios implements Serializable {
     private Short usuariosnotificarvto;
     @ManyToMany(mappedBy = "usuariosList")
     private List<Roles> rolesList;
+    @Column(name = "clave")
+    private String clave;
 
     public Usuarios() {
     }
@@ -77,6 +79,14 @@ public class Usuarios implements Serializable {
 
     public String getUsuariosid() {
         return usuariosid;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
     public void setUsuariosid(String usuariosid) {

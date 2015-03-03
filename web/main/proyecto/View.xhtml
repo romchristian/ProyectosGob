@@ -131,7 +131,7 @@
                             </h:panelGrid>
                         </p:column>
                     </p:row>
-                      <p:row>
+                    <p:row>
                         <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1">
                             <h:outputText value="Observación"/>
                         </p:column>
@@ -143,10 +143,10 @@
                         <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Objetivos"/></p:column>
                         <p:column colspan="3" style="font-weight: bold;">
                             <table>
-                                <p:dataGrid value="#{proyectoController.selected.proyectosobjetivosList}" var="o">
+                                <p:dataGrid value="#{proyectoController.selected.objetivos}" var="o">
                                     <tr>
                                         <td>
-                                            <h:outputText value="#{o.proyectosl2objetivo}" style="font-weight: bold"/>
+                                            <h:outputText value="#{o.descripcion}" style="font-weight: bold"/>
                                         </td>
                                     </tr>
                                 </p:dataGrid>
@@ -155,8 +155,8 @@
 
                         </p:column>
                     </p:row>
-                     
-                  
+
+
                 </p:panelGrid>
 
                 <br/>
@@ -258,7 +258,11 @@
 
                         <p:outputPanel  rendered="#{(t.tipoResultado == 'TEXTO_MEDIA_SANCION'
                                                     or t.tipoResultado == 'TEXTO_SANCION' 
-                                                    or t.tipoResultado == 'TEXTO_APROBADO')}">
+                                                    or t.tipoResultado == 'VETO_TOTAL_CO' 
+                                                    or t.tipoResultado == 'VETO_TOTAL_CR' 
+                                                    or t.tipoResultado == 'VETO_PARCIAL_CO' 
+                                                    or t.tipoResultado == 'VETO_PARCIAL_CR' 
+                                                    or t.tipoResultado == 'TEXTO_APROBADO_CM')}">
                             <a href="${initParam.serverDir}DownloadServlet?nombre=#{t.resultadoLink}">
                                 <div>
                                     <table style="border-width: 0px">

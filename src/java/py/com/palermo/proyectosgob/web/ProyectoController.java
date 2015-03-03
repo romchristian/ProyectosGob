@@ -18,7 +18,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import py.com.palermo.proyectosgob.dao.ProyectosFacade;
 import py.com.palermo.proyectosgob.persistencia.Comision;
+import py.com.palermo.proyectosgob.persistencia.Objetivo;
 import py.com.palermo.proyectosgob.persistencia.Proyectos;
+import py.com.palermo.proyectosgob.persistencia.Proyectosobjetivos;
+import py.com.palermo.proyectosgob.persistencia.ProyectosobjetivosPK;
 import py.com.palermo.proyectosgob.persistencia.TipoResultado;
 import py.com.palermo.proyectosgob.persistencia.Tramite;
 import py.com.palermo.proyectosgob.web.util.JsfUtil;
@@ -45,19 +48,31 @@ public class ProyectoController implements Serializable {
     private List<String> subTitulos;
     private Comision comisionElegida;
     private String nombreArchivo;
-    
-    
+    private String nombreArchivoOriginal;
+    private Objetivo objetivoNuevo;
 
     @Inject
     private AutoCompleteComision autoCompleteComision;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         autoCompleteComision.reload();
-        if(tramiteNuevo == null){
+        if (tramiteNuevo == null) {
             tramiteNuevo = new Tramite();
             tramiteNuevo.setCamara("CAMARA DE DIPUTADOS");
         }
+    }
+
+    public Objetivo getObjetivoNuevo() {
+        if (objetivoNuevo == null) {
+            objetivoNuevo = new Objetivo();
+            objetivoNuevo.setProyecto(selected);
+        }
+        return objetivoNuevo;
+    }
+
+    public void setObjetivoNuevo(Objetivo objetivoNuevo) {
+        this.objetivoNuevo = objetivoNuevo;
     }
 
     public String getNombreArchivo() {
@@ -67,58 +82,109 @@ public class ProyectoController implements Serializable {
     public void setNombreArchivo(String nombreArchivo) {
         this.nombreArchivo = nombreArchivo;
     }
+
+    public String getNombreArchivoOriginal() {
+        return nombreArchivoOriginal;
+    }
+
+    public void setNombreArchivoOriginal(String nombreArchivoOriginal) {
+        this.nombreArchivoOriginal = nombreArchivoOriginal;
+    }
+
     
-    
-    
-    public void generarNombreArchivo(){
+    public void generarNombreArchivo() {
         UUID uuid = UUID.randomUUID();
-        nombreArchivo = selected.getProyectosnroexpediente()+"_"+tramiteNuevo.getTipoResultado()+"_"+uuid.toString();
+        nombreArchivo = selected.getProyectosnroexpediente() + "_" + tramiteNuevo.getTipoResultado() + "_" + uuid.toString();
     }
     
-    public void guardaNombreArchivo(){
+    public void generarNombreArchivoOrignal() {
+        UUID uuid = UUID.randomUUID();
+        nombreArchivoOriginal = selected.getProyectosnroexpediente() + "_Texto_Original"+ "_" + uuid.toString();
+    }
+    
+    public void guardaNombreArchivoOriginal() {
+       selected.setProyectosrutatexto1(nombreArchivoOriginal);
+       nombreArchivoOriginal = null;
+    }
+    
+    public void guardaNombreArchivo() {
         tramiteNuevo.setResultadoLink(nombreArchivo);
         nombreArchivo = null;
     }
-    
-    
-    public String guardar(){
+
+    public String guardar() {
         try {
             ejbFacade.edit(selected);
             JsfUtil.addSuccessMessage("El proyecto se guardo exitosamente!");
+            
         } catch (Exception e) {
         }
-        
+
         return "List.xhtml?faces-redirect=true";
     }
-    
+
     public void cambiaCamara(AjaxBehaviorEvent event) {
-        String camara =  (String) ((UIOutput)event.getSource()).getValue();
+        String camara = (String) ((UIOutput) event.getSource()).getValue();
         tramiteNuevo.setCamara(camara);
         autoCompleteComision.setCamara(camara);
         autoCompleteComision.reload();
     }
-    
-    public void addTramite(){
-        if(selected.getTramites() == null){
+
+    public void addObjetivo() {
+        if (selected.getObjetivos() == null) {
+            selected.setObjetivos(new ArrayList<Objetivo>());
+        }
+        objetivoNuevo.setProyecto(selected);
+        selected.getObjetivos().add(objetivoNuevo);
+        objetivoNuevo = null;
+    }
+
+    public void remueveObjetivo(Objetivo o) {
+//        System.out.println("Removiendo....:" + o.getProyectosl2objetivo());
+//        int indice = 0;
+//        for (Proyectosobjetivos obj : selected.getProyectosobjetivosList()) {
+//            System.out.println("Indice 0 1:" + o.getIndice());
+//            System.out.println("Indice 0bj 1:" + obj.getIndice());
+//            if (o.getIndice() == obj.getIndice()) {
+//                System.out.println("Indice 0 2:" + o.getIndice());
+//                System.out.println("Indice 0bj 2:" + obj.getIndice());
+//                System.out.println("Indice of 2:" + selected.getProyectosobjetivosList().indexOf(obj));
+//                indice = obj.getIndice();
+//                break;
+//            }
+//        }
+//
+//        selected.getProyectosobjetivosList().remove(indice);
+
+        selected.getObjetivos().remove(o);
+    }
+
+    public void addTramite() {
+        if (selected.getTramites() == null) {
             selected.setTramites(new ArrayList<Tramite>());
         }
-        
+
         tramiteNuevo.setProyecto(selected);
         selected.getTramites().add(tramiteNuevo);
         tramiteNuevo = new Tramite();
     }
-    public void addComision(){
-        if(tramiteNuevo.getComisiones() == null){
+    
+    public void quitarTramite(Tramite t){
+        selected.getTramites().remove(t);
+    }
+
+    public void addComision() {
+        if (tramiteNuevo.getComisiones() == null) {
             tramiteNuevo.setComisiones(new ArrayList<Comision>());
         }
         tramiteNuevo.getComisiones().add(comisionElegida);
         comisionElegida = null;
     }
-    
-    public void quitarComision(Comision c){
+
+    public void quitarComision(Comision c) {
         tramiteNuevo.getComisiones().remove(c);
     }
-    
+
     public Comision getComisionElegida() {
         return comisionElegida;
     }
@@ -162,11 +228,10 @@ public class ProyectoController implements Serializable {
         this.id = id;
     }
 
-    
-    public void subjectSelectionChanged(final AjaxBehaviorEvent event)  {
-      //tramiteNuevo.setTipoResultado((TipoResultado) event.getSource());
+    public void subjectSelectionChanged(final AjaxBehaviorEvent event) {
+        //tramiteNuevo.setTipoResultado((TipoResultado) event.getSource());
     }
-    
+
     public Tramite getTramiteNuevo() {
         if (tramiteNuevo == null) {
             tramiteNuevo = new Tramite();

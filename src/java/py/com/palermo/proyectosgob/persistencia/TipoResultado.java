@@ -10,5 +10,16 @@ package py.com.palermo.proyectosgob.persistencia;
  * @author cromero
  */
 public enum TipoResultado {
- GIRADO_A,DICTAMEN_COMISION,TEXTO_DICTAMEN,TEXTO_MEDIA_SANCION,TEXTO_SANCION,TEXTO_APROBADO,OTRO
+
+    GIRADO_A,
+    DICTAMEN_COMISION,
+    TEXTO_DICTAMEN,
+    TEXTO_MEDIA_SANCION,
+    TEXTO_SANCION,
+    VETO_TOTAL_CO,
+    VETO_TOTAL_CR,
+    VETO_PARCIAL_CO,
+    VETO_PARCIAL_CR,
+    TEXTO_APROBADO_CM,
+    OTRO
 }

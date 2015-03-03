@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 /**
@@ -37,7 +38,19 @@ public class Proyectosobjetivos implements Serializable {
     @JoinColumn(name = "proyectosid", referencedColumnName = "proyectosid", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Proyectos proyectos;
+    
+    
+    @Transient
+    private int indice;
 
+    public int getIndice() {
+        return indice;
+    }
+
+    public void setIndice(int indice) {
+        this.indice = indice;
+    }
+    
     public Proyectosobjetivos() {
     }
 
