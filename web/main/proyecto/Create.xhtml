@@ -10,8 +10,7 @@
 
     <ui:composition template="/template.xhtml">
         <f:metadata>
-            <f:viewParam name="id" value="#{proyectoController.id}"/>
-            <f:viewAction action="#{proyectoController.cargaDatos()}"/>
+            <f:viewAction action="#{proyectoController.prepareCreate()}"/>
         </f:metadata>
 
 
@@ -99,7 +98,7 @@
                 <p:panel>
                     <f:facet name="header" class="header"> 
                         <div style="text-align: left;">
-                            Edición de Proyecto
+                            Nuevo Proyecto
                         </div>
                     </f:facet>
 
@@ -109,10 +108,10 @@
                                 <p:button value="Atras" outcome="List">
                                 </p:button>
 
-                                <p:commandButton value="Guardar"  action="#{proyectoController.guardar()}" update="@(.mensajes)"/>
+
                             </td>
                             <td valign="bottom" align="right" width="50%">
-
+                                <p:commandButton value="Guardar"  action="#{proyectoController.guardar()}" update="@(.mensajes)"/>
                             </td>
                         </tr>
                     </table>
@@ -127,15 +126,14 @@
                         <h2>INFORMACIÓN DEL PROYECTO</h2>
                         <p:separator/>
                         <br/>
-                        
+                        <p:focus/>
                         <p:panelGrid style="width: 100%">
                             <p:row>
                                 <p:column style="width: 15%; height: 40px;" class="fondoColumna1">
                                     <h:outputText value="Nro Expediente"/>
                                 </p:column>
                                 <p:column style="width: 35%;font-weight: bold;">
-<!--                                    <p:inputText value="#{proyectoController.selected.proyectosnroexpediente}" style="font-weight: bold"/>-->
-                                    <h:outputText value="#{proyectoController.selected.proyectosnroexpediente}" style="font-weight: bold"/>
+                                    <p:inputText value="#{proyectoController.selected.proyectosnroexpediente}" style="font-weight: bold"/>
                                 </p:column>
 
                                 <p:column style="width: 15%" class="fondoColumna1">
@@ -278,38 +276,6 @@
                         <br/>
                         <h2>TRÁMITES</h2>
                         <p:separator/>
-                        <br/>
-                        <br/>
-                        <h:outputText value="(Trámites anotados en la versión vieja)" style="font-style: italic;font-weight: bold"/>
-                        <p:dataList value="#{proyectoController.selected.proyectostramitesList}" var="t">
-                            <h:outputText value="#{t.proyectosl3tramite}"/>
-                        </p:dataList>
-                        <br/>
-                        <h:panelGrid columns="6">
-                            <h:outputText value="Texto Media Sancion"/>
-                            <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto2 == null or proyectoController.selected.proyectosrutatexto2.length() == 0)}"/>
-                            <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto2 == null or proyectoController.selected.proyectosrutatexto2.length() == 0)}">
-                                <a target="_blank" href="${initParam.serverDir}DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto2}">Ver</a>
-                            </p:outputPanel>
-
-                            <h:outputText value="Texto Sancionado"/>
-                            <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto3 == null or proyectoController.selected.proyectosrutatexto3.length() == 0)}"/>
-                            <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto3 == null or proyectoController.selected.proyectosrutatexto3.length() == 0)}">
-                                <a target="_blank" href="${initParam.serverDir}DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto3}">Ver</a>
-                            </p:outputPanel>
-
-                            <h:outputText value="Texto Aprobado"/>
-                            <h:outputText value="No Disponible" rendered="#{(proyectoController.selected.proyectosrutatexto4 == null or proyectoController.selected.proyectosrutatexto4.length() == 0)}"/>
-                            <p:outputPanel rendered="#{not (proyectoController.selected.proyectosrutatexto4 == null or proyectoController.selected.proyectosrutatexto4.length() == 0)}">
-                                <a target="_blank" href="${initParam.serverDir}DownloadServlet?nombre=#{proyectoController.selected.proyectosrutatexto4}">Ver</a>
-                            </p:outputPanel>
-                        </h:panelGrid>
-
-                        <p:panelGrid columns="2">
-                            <p:column  style="font-weight: bold;height: 40px" class="fondoColumna1"><h:outputText value="Observaciones"/></p:column>
-                            <p:column colspan="3" style="font-weight: bold;"><h:outputText value="#{proyectoController.selected.proyectosobservacion}"/></p:column>
-                        </p:panelGrid>
-
                         <br/>
                         <br/>
 

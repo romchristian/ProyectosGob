@@ -73,20 +73,35 @@
 
             }
 
+            .program{
+                color: #fff;
+                font-weight: bold;
+                padding-right:  0px
+            }
+
+            .program div span{
+                color: #33ccFF !important;
+            }
+
         </style>
     </h:head>
 
     <body style="padding: 0;margin: 0;">
 
-        
 
         <div class="header">
             <h:form>
-                <div style="color: white!important;position: absolute;top:0px; left: calc(100% - 250px);font-size: 15px">Usuario: #{request.userPrincipal} - <h:commandLink style="color: white;" action="#{autenticador.logout()}" value="Salir"/></div>
+                <div class="program" style="float: right;font-size: 12pt;display: inline">
+                    <div style="display: block">
+                        Usuario: <span>#{request.userPrincipal}  </span> <span><h:commandLink style="color:#1fcf5f!important;float: right;margin-left: 10px" action="#{autenticador.logout()}"><img alt="Salir" title="Salir" src="#{resource['img/exit.png']}" width="28" height="28" style="position: relative; top: 10px;"/></h:commandLink></span>
+                    </div>
+                </div>
             </h:form>
         </div>
 
+
         <div class="container">    
+
             <div class="sideBar">
                 <div style="width: 200px; margin: 0 auto 0 auto">
                     <p:graphicImage library="img" name="logo_trans.png"  width="200"/>

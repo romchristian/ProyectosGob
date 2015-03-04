@@ -7,14 +7,29 @@
 
     <h:outputText value="Proyectos" style="font-size: 10pt; position: relative;left: 15px;font-weight: bold;margin-bottom: 20px"/>
     <br/>
-
+    <br/>
     <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
-        <h:commandLink  value="Localizar Proyectos" action="/main/proyecto/List" 
-                        rendered="#{(request.isUserInRole('admin'))}"/>
+        <p:link  value="Inicio" outcome="/main/home"/>
+
+        <p:link  value="Nuevo Proyecto" outcome="/main/proyecto/Create" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('editar_proyecto'))}"/>
+
+        <p:link  value="Localizar Proyectos" outcome="/main/proyecto/List" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('ver_proyecto'))}"/>
 
 
     </h:panelGrid>
+    <br/>
+    <br/>
+    <h:outputText value="Configuraciones" style="font-size: 10pt; position: relative;left: 15px;font-weight: bold;margin-bottom: 20px"
+                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+    <br/>
+    <br/>
+    <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
+        <p:link  value="Usuarios" outcome="/main/configuraciones/usuarios/List" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
 
+    </h:panelGrid>
 
 </ui:composition>
 

@@ -6,9 +6,10 @@
 package py.com.palermo.proyectosgob.persistencia;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,8 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import py.com.palermo.proyectosgob.web.util.Encryptador;
 
 /**
  *
@@ -30,30 +30,28 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u")})
 public class Usuarios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "usuariosid")
     private String usuariosid;
-    @Size(max = 20)
+
     @Column(name = "usuariosnombre")
     private String usuariosnombre;
-    @Size(max = 20)
+
     @Column(name = "usuariosapellido")
     private String usuariosapellido;
-    @Size(max = 30)
+
     @Column(name = "usuariosnombremostrar")
     private String usuariosnombremostrar;
     @Column(name = "usuariostipo")
     private Short usuariostipo;
     @Column(name = "usuariospassword")
     private Short usuariospassword;
-    @Size(max = 40)
+
     @Column(name = "usuariosemail")
     private String usuariosemail;
-    @Size(max = 40)
+
     @Column(name = "usuariosseguridad")
     private String usuariosseguridad;
     @Column(name = "usuariosestado")
@@ -65,12 +63,17 @@ public class Usuarios implements Serializable {
     private Date usuariosfecha;
     @Column(name = "usuariosnotificarvto")
     private Short usuariosnotificarvto;
-    @ManyToMany(mappedBy = "usuariosList")
+    @ManyToMany(mappedBy = "usuariosList", cascade = CascadeType.ALL)
     private List<Roles> rolesList;
     @Column(name = "clave")
     private String clave;
 
     public Usuarios() {
+        this.usuariosestado = new Short("0");
+        this.usuariosfecha = new Date();
+        this.usuariossync = new Short("0");
+        this.usuariospassword = new Short("0");
+        this.usuariostipo = new Short("0");
     }
 
     public Usuarios(String usuariosid) {
@@ -146,7 +149,7 @@ public class Usuarios implements Serializable {
     }
 
     public void setUsuariosseguridad(String usuariosseguridad) {
-        this.usuariosseguridad = usuariosseguridad;
+        this.usuariosseguridad = Encryptador.encrypta(usuariosseguridad);
     }
 
     public Short getUsuariosestado() {
@@ -182,6 +185,9 @@ public class Usuarios implements Serializable {
     }
 
     public List<Roles> getRolesList() {
+        if (rolesList == null) {
+            rolesList = new ArrayList<>();
+        }
         return rolesList;
     }
 
@@ -213,5 +219,5 @@ public class Usuarios implements Serializable {
     public String toString() {
         return "py.com.palermo.proyectosgob.persistencia.Usuarios[ usuariosid=" + usuariosid + " ]";
     }
-    
+
 }

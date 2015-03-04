@@ -7,6 +7,7 @@ package py.com.palermo.proyectosgob.web;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
@@ -16,6 +17,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.joda.time.DateTime;
 import py.com.palermo.proyectosgob.dao.ProyectosFacade;
 import py.com.palermo.proyectosgob.persistencia.Comision;
 import py.com.palermo.proyectosgob.persistencia.Objetivo;
@@ -165,12 +167,26 @@ public class ProyectoController implements Serializable {
         }
 
         tramiteNuevo.setProyecto(selected);
+        if(tramiteNuevo.getTipoResultado() == TipoResultado.TEXTO_MEDIA_SANCION && tramiteNuevo.getFecha() != null){
+            DateTime dt = new DateTime(tramiteNuevo.getFecha());
+            Date fechaFicta = dt.plusMonths(3).toDate();
+            selected.setProyectosfechaficta(fechaFicta);
+        }
         selected.getTramites().add(tramiteNuevo);
         tramiteNuevo = new Tramite();
     }
     
     public void quitarTramite(Tramite t){
         selected.getTramites().remove(t);
+    }
+    
+    public void toogleEditTramite(Tramite t){
+        if(t.isEditar()){
+            t.setEditar(false);
+        }else{
+            t.setEditar(true);
+        }
+       
     }
 
     public void addComision() {
@@ -251,6 +267,10 @@ public class ProyectoController implements Serializable {
         this.comisionGiradas = comisionGiradas;
     }
 
+    public void prepareCreate(){
+        selected = new Proyectos();
+    }
+    
     public Proyectos getSelected() {
         return selected;
     }

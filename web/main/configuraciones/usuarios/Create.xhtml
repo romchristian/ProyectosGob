@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UsuariosCreateDlg" widgetVar="UsuariosCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateUsuariosTitle}">
+            <h:form id="UsuariosCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{usuariosController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateUsuariosLabel_usuariosid}" for="usuariosid" />
+                        <p:inputText id="usuariosid" value="#{usuariosController.selected.usuariosid}" title="#{bundle.CreateUsuariosTitle_usuariosid}" required="true" requiredMessage="#{bundle.CreateUsuariosRequiredMessage_usuariosid}"/>
+
+                        <p:outputLabel value="#{bundle.CreateUsuariosLabel_usuariosnombre}" for="usuariosnombre" />
+                        <p:inputText id="usuariosnombre" value="#{usuariosController.selected.usuariosnombre}" title="#{bundle.CreateUsuariosTitle_usuariosnombre}" />
+                        <p:outputLabel value="#{bundle.CreateUsuariosLabel_usuariosapellido}" for="usuariosapellido" />
+                        <p:inputText id="usuariosapellido" value="#{usuariosController.selected.usuariosapellido}" title="#{bundle.CreateUsuariosTitle_usuariosapellido}" />
+
+                        <p:outputLabel value="#{bundle.CreateUsuariosLabel_usuariosemail}" for="usuariosemail" />
+                        <p:inputText id="usuariosemail" value="#{usuariosController.selected.usuariosemail}" title="#{bundle.CreateUsuariosTitle_usuariosemail}" />
+
+                        <p:outputLabel for="pwd1" value="Clave:" />
+                        <p:password id="pwd1" value="#{usuariosController.selected.usuariosseguridad}" match="pwd2" required="true" />
+                        <p:outputLabel for="pwd2" value="Confirmar Clave:" />
+                        <p:password id="pwd2" value="#{usuariosController.selected.usuariosseguridad}" required="true" />
+
+                        <h:outputText value="Permisos:" />
+                        <p:selectManyCheckbox id="grid" value="#{usuariosController.selected.rolesList}" layout="grid" columns="2" converter="rolConverter">
+                            <f:selectItems value="#{rolController.items}" var="r" itemLabel="#{r.nombre}" itemValue="#{r}"/>
+                        </p:selectManyCheckbox>
+                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{usuariosController.create}" value="#{bundle.Save}" update="display,:UsuariosListForm:datalist" oncomplete="handleSubmit(args,'UsuariosCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="UsuariosCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

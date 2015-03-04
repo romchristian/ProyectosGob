@@ -4,7 +4,7 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
-<!--    <context-param>
+    <!--    <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>nandepy</param-value>
     </context-param>-->
@@ -22,9 +22,7 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>120</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>main/home.xhtml</welcome-file>
@@ -45,17 +43,65 @@
         <error-code>500</error-code>
         <location>/errorSQL.xhtml</location>
     </error-page>
-    
     <security-constraint>
-        <display-name>ConstraintHome</display-name>
+        <display-name>ConstraintAdmin</display-name>
         <web-resource-collection>
-            <web-resource-name>Home</web-resource-name>
+            <web-resource-name>Admin</web-resource-name>
             <description/>
-            <url-pattern>/main/*</url-pattern>
+            <url-pattern>/main/proyecto/List</url-pattern>
+            <url-pattern>/main/proyecto/Create</url-pattern>
+            <url-pattern>/main/proyecto/View</url-pattern>
+            <url-pattern>/main/home</url-pattern>
+            <url-pattern>/main/configuraciones/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintVer</display-name>
+        <web-resource-collection>
+            <web-resource-name>Ver</web-resource-name>
+            <description/>
+            <url-pattern>/main/proyecto/List</url-pattern>
+            <url-pattern>/main/proyecto/View</url-pattern>
+            <url-pattern>/main/home</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>ver_proyecto</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintEditar</display-name>
+        <web-resource-collection>
+            <web-resource-name>Editar</web-resource-name>
+            <description/>
+            <url-pattern>/main/proyecto/List</url-pattern>
+            <url-pattern>/main/proyecto/Create</url-pattern>
+            <url-pattern>/main/proyecto/View</url-pattern>
+            <url-pattern>/main/home</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>editar_proyecto</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintConfiguraciones</display-name>
+        <web-resource-collection>
+            <web-resource-name>Configuraciones</web-resource-name>
+            <description/>
+            <url-pattern>/main/configuraciones/*</url-pattern>
+            <url-pattern>/main/home</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>configuraciones</role-name>
         </auth-constraint>
     </security-constraint>
     <login-config>
@@ -69,5 +115,17 @@
     <security-role>
         <description/>
         <role-name>admin</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>ver_proyecto</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>editar_proyecto</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>configuraciones</role-name>
     </security-role>
 </web-app>
