@@ -132,8 +132,13 @@
                                 <p:column style="width: 15%; height: 40px;" class="fondoColumna1">
                                     <h:outputText value="Nro Expediente"/>
                                 </p:column>
+                                
                                 <p:column style="width: 35%;font-weight: bold;">
-                                    <p:inputText value="#{proyectoController.selected.proyectosnroexpediente}" style="font-weight: bold"/>
+                                    <p:inputText value="#{proyectoController.selected.proyectosnroexpediente}" style="font-weight: bold" required="true" requiredMessage="DEBE completar Nro de Expediente!"
+                                                 id="nroExpediente">
+                                        <f:validator validatorId="validadorNroExpediente"/>
+                                        <p:ajax event="blur" update="nroExpediente" process="nroExpediente"/>
+                                    </p:inputText>
                                 </p:column>
 
                                 <p:column style="width: 15%" class="fondoColumna1">

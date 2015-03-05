@@ -83,6 +83,20 @@
                 color: #33ccFF !important;
             }
 
+
+            .ui-menu.ui-menu-dynamic {
+                position: absolute;
+                display: none;
+                top: 10px;
+                left: calc(90% + 30px);
+                //z-index: 100000!important;
+            }
+
+            div[id="formMenuUsuario:growl_container"] {
+                position:absolute;
+                top:calc(40% - 180px);
+                left:calc(50% - 170px);
+            }
         </style>
     </h:head>
 
@@ -90,12 +104,44 @@
 
 
         <div class="header">
-            <h:form>
-                <div class="program" style="float: right;font-size: 12pt;display: inline">
-                    <div style="display: block">
-                        Usuario: <span>#{request.userPrincipal}  </span> <span><h:commandLink style="color:#1fcf5f!important;float: right;margin-left: 10px" action="#{autenticador.logout()}"><img alt="Salir" title="Salir" src="#{resource['img/exit.png']}" width="28" height="28" style="position: relative; top: 10px;"/></h:commandLink></span>
-                    </div>
+            <h:form id="formMenuUsuario">
+
+
+                <p:growl  id="growl"/>
+
+                <div  style="font-size: 12pt;
+                      position: absolute;
+                      left: 89%;
+                      width: 200px;">
+
+
+                    <p:splitButton value="#{request.userPrincipal.name}"  icon="ui-icon-home" immediate="true">
+
+
+                        <p:menuitem value="Cambiar Contraseña"   icon="ui-icon-pencil"
+                                    action="#{usuariosController.preparaCambiarPass()}" oncomplete="PF('DialogCambiaPass').show()"
+                                    update="@(.panelDialogCambiaPass)" />
+
+                        <p:separator />
+                        <p:menuitem value="Salir" action="#{autenticador.logout()}" icon="ui-icon-extlink"   immediate="true"/>
+                    </p:splitButton>
+
                 </div>
+
+
+                <p:dialog widgetVar="DialogCambiaPass" header="Cambiar Mi Contraseña"  resizable="false">
+                    <p:panel id="panelDialogCambiaPass" styleClass="panelDialogCambiaPass">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel for="pwd1" value="Clave:" />
+                            <p:password id="pwd1" value="#{usuariosController.selected.usuariosseguridad}" match="pwd2" />
+                            <p:outputLabel for="pwd2" value="Confirmar Clave:" />
+                            <p:password id="pwd2" value="#{usuariosController.selected.usuariosseguridad}" />
+                        </p:panelGrid>
+                        
+                        <p:commandButton id="btnGuardaClave" actionListener="#{usuariosController.update}" value="Guardar" update="panelDialogCambiaPass,formMenuUsuario:growl" oncomplete="handleSubmit(args, 'DialogCambiaPass');"/>
+                        <p:commandButton value="Cancelar" onclick="DialogCambiaPass.hide()"/>
+                    </p:panel>
+                </p:dialog>
             </h:form>
         </div>
 

@@ -53,15 +53,19 @@ public class Autenticador implements Serializable {
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-
+        String R = null;
         try {
             System.out.println("User: " + username);
             System.out.println("Pass: " + password);
             request.login(username, password);
+            R = "/main/home.xhtml?faces-redirect=true";
         } catch (ServletException ex) {
             Logger.getLogger(Autenticador.class.getName()).log(Level.SEVERE, null, ex);
+            username = null;
+            password = null;
+            JsfUtil.addErrorMessage("Falló la autenticación!");
         }
-        return "/main/home.xhtml?faces-redirect=true";
+        return R;
     }
 
     public String logout() throws IOException {

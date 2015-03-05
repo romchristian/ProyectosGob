@@ -8,6 +8,7 @@ package py.com.palermo.proyectosgob.persistencia;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -41,7 +42,7 @@ public class Roles implements Serializable {
     @JoinTable(name = "rol_usuario", joinColumns = {
         @JoinColumn(name = "rolid", referencedColumnName = "roleid")}, inverseJoinColumns = {
         @JoinColumn(name = "usuarioid", referencedColumnName = "usuariosid")})
-    @ManyToMany
+    @ManyToMany(mappedBy = "rolesList")
     private List<Usuarios> usuariosList;
 
     public Roles() {

@@ -45,10 +45,10 @@ public class Proyectos implements Serializable {
     @NotNull
     @Column(name = "proyectosid")
     private Short proyectosid;
-    @Size(max = 15)
+    
     @Column(name = "proyectosnroexpediente")
     private String proyectosnroexpediente;
-    @Size(max = 715)
+    
     @Column(name = "proyectosnombre")
     private String proyectosnombre;
     @Column(name = "proyectoscamaraorigen")
@@ -58,12 +58,12 @@ public class Proyectos implements Serializable {
     private Date proyectosfechaingreso;
     @Column(name = "proyectosperiodolegislativo")
     private Short proyectosperiodolegislativo;
-    @Size(max = 440)
+    
     @Column(name = "proyectosdictamen")
     private String proyectosdictamen;
     @Column(name = "proyectoscalificativo")
     private Character proyectoscalificativo;
-    @Size(max = 500)
+    
     @Column(name = "proyectosobservacion")
     private String proyectosobservacion;
     @Column(name = "proyectosestado")
@@ -79,16 +79,16 @@ public class Proyectos implements Serializable {
     @Column(name = "proyectosfechaficta")
     @Temporal(TemporalType.DATE)
     private Date proyectosfechaficta;
-    @Size(max = 60)
+    
     @Column(name = "proyectosrutatexto1")
     private String proyectosrutatexto1;
-    @Size(max = 60)
+    
     @Column(name = "proyectosrutatexto2")
     private String proyectosrutatexto2;
-    @Size(max = 60)
+    
     @Column(name = "proyectosrutatexto3")
     private String proyectosrutatexto3;
-    @Size(max = 60)
+    
     @Column(name = "proyectosrutatexto4")
     private String proyectosrutatexto4;
     @Column(name = "proyectosfechatramite3")

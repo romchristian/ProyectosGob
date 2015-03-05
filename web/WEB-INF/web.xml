@@ -10,7 +10,7 @@
     </context-param>-->
     <context-param>
         <param-name>serverDir</param-name>
-        <param-value>http://localhost:8080/FileUpload/</param-value>
+        <param-value>http://54.94.167.10:8080/FileUpload/</param-value>
     </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -29,7 +29,7 @@
     </welcome-file-list>
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-        <location>/main/home.xhtml</location>
+        <location>/login.xhtml</location>
     </error-page>
     <error-page>
         <exception-type>java.sql.SQLException</exception-type>
@@ -37,26 +37,25 @@
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/main/home.xhtml</location>
+        <location>/login.xhtml</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/errorSQL.xhtml</location>
+        <location>/error.xhtml</location>
     </error-page>
     <security-constraint>
         <display-name>ConstraintAdmin</display-name>
         <web-resource-collection>
             <web-resource-name>Admin</web-resource-name>
             <description/>
-            <url-pattern>/main/proyecto/List</url-pattern>
-            <url-pattern>/main/proyecto/Create</url-pattern>
-            <url-pattern>/main/proyecto/View</url-pattern>
-            <url-pattern>/main/home</url-pattern>
-            <url-pattern>/main/configuraciones/*</url-pattern>
+            <url-pattern>/main/home.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>admin</role-name>
+            <role-name>ver_proyecto</role-name>
+            <role-name>editar_proyecto</role-name>
+            <role-name>configuraciones</role-name>
         </auth-constraint>
     </security-constraint>
     <security-constraint>
@@ -66,12 +65,12 @@
             <description/>
             <url-pattern>/main/proyecto/List</url-pattern>
             <url-pattern>/main/proyecto/View</url-pattern>
-            <url-pattern>/main/home</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>admin</role-name>
             <role-name>ver_proyecto</role-name>
+            <role-name>editar_proyecto</role-name>
         </auth-constraint>
     </security-constraint>
     <security-constraint>
@@ -79,10 +78,8 @@
         <web-resource-collection>
             <web-resource-name>Editar</web-resource-name>
             <description/>
-            <url-pattern>/main/proyecto/List</url-pattern>
             <url-pattern>/main/proyecto/Create</url-pattern>
-            <url-pattern>/main/proyecto/View</url-pattern>
-            <url-pattern>/main/home</url-pattern>
+            <url-pattern>/main/proyecto/Edit</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
@@ -96,7 +93,6 @@
             <web-resource-name>Configuraciones</web-resource-name>
             <description/>
             <url-pattern>/main/configuraciones/*</url-pattern>
-            <url-pattern>/main/home</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
@@ -109,7 +105,7 @@
         <realm-name>NandePyJDBC</realm-name>
         <form-login-config>
             <form-login-page>/login.xhtml</form-login-page>
-            <form-error-page>/error.xhtml</form-error-page>
+            <form-error-page>/login.xhtml</form-error-page>
         </form-login-config>
     </login-config>
     <security-role>

@@ -63,8 +63,9 @@ public class Usuarios implements Serializable {
     private Date usuariosfecha;
     @Column(name = "usuariosnotificarvto")
     private Short usuariosnotificarvto;
-    @ManyToMany(mappedBy = "usuariosList", cascade = CascadeType.ALL)
+    @ManyToMany
     private List<Roles> rolesList;
+
     @Column(name = "clave")
     private String clave;
 

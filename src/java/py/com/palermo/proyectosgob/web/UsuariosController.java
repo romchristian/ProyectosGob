@@ -29,6 +29,14 @@ public class UsuariosController implements Serializable {
     private List<Usuarios> items = null;
     private Usuarios selected;
 
+    public void preparaCambiarPass() {
+        String principal = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
+        System.out.println("PRICIPALLLL: " + principal);
+        selected = ejbFacade.find(principal);
+        System.out.println("Usuario ACTUAL: " + selected.getUsuariosnombre());
+
+    }
+
     private List<Roles> rolesSeleccionados;
 
     public List<Roles> getRolesSeleccionados() {
@@ -43,6 +51,9 @@ public class UsuariosController implements Serializable {
     }
 
     public Usuarios getSelected() {
+        if (selected == null) {
+            selected = new Usuarios();
+        }
         return selected;
     }
 

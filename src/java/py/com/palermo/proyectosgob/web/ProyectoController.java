@@ -13,17 +13,18 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.component.UIOutput;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.joda.time.DateTime;
+import py.com.palermo.proyectosgob.dao.AuditoriaFacade;
 import py.com.palermo.proyectosgob.dao.ProyectosFacade;
+import py.com.palermo.proyectosgob.persistencia.Auditoria;
 import py.com.palermo.proyectosgob.persistencia.Comision;
 import py.com.palermo.proyectosgob.persistencia.Objetivo;
 import py.com.palermo.proyectosgob.persistencia.Proyectos;
-import py.com.palermo.proyectosgob.persistencia.Proyectosobjetivos;
-import py.com.palermo.proyectosgob.persistencia.ProyectosobjetivosPK;
 import py.com.palermo.proyectosgob.persistencia.TipoResultado;
 import py.com.palermo.proyectosgob.persistencia.Tramite;
 import py.com.palermo.proyectosgob.web.util.JsfUtil;
@@ -38,6 +39,8 @@ public class ProyectoController implements Serializable {
 
     @EJB
     private ProyectosFacade ejbFacade;
+    @EJB
+    private AuditoriaFacade auditoriaFacade;
 
     private Proyectos selected;
     private int id;
@@ -116,7 +119,21 @@ public class ProyectoController implements Serializable {
 
     public String guardar() {
         try {
-            ejbFacade.edit(selected);
+            
+            Auditoria a = new Auditoria();
+            
+            if(selected.getProyectosid() == null){
+                a.setDescripcion("Se creó el proyecto: " + selected.getProyectosnroexpediente());
+            }else{
+                 a.setDescripcion("Se modificó el proyecto: " + selected.getProyectosnroexpediente());
+            }
+            
+            Proyectos p = ejbFacade.edit2(selected);
+            
+            String principal = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
+            a.setProyecto(p);
+            auditoriaFacade.create(a, principal);
+            
             JsfUtil.addSuccessMessage("El proyecto se guardo exitosamente!");
             
         } catch (Exception e) {
