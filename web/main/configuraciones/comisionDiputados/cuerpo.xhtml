@@ -1,0 +1,287 @@
+
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+
+    <style>
+
+        * .dataList{
+            margin: 5px;
+        }
+        .hoja{
+            height: 100%;
+            width: 95%;
+            background-color: rgb(255, 255, 255);
+            border: 1px solid #ccc;
+            z-index: 0;
+            margin: 0 auto 0 auto;
+            margin-top: 20px;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -webkit-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
+            -moz-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
+            box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
+            padding: 20px;
+            margin-bottom: 20px;
+
+        }
+
+        .col1{
+            text-align: left;
+            width: 10%
+        }
+        .col2{
+            text-align: left;
+            width: 10%
+
+        }
+        .fondoColumna1{
+            background-color: #953b39;
+            font-weight: bold;
+            color: white;
+        }
+
+        .ui-datalist-item{
+            margin-top: 5px;
+            padding: 5px;
+        }
+
+
+        .btnPlus {
+            background-image: url('#{resource['img/plus.png']}');
+            width: 64px;
+        }
+        .ui-widget-content {
+            border: 0px solid #444444;
+        }
+
+        .ui-panelgrid .ui-panelgrid-cell {
+            border-width: 1px;
+            border-style: solid;
+            border-color: #bbb;
+
+        }
+
+        .ui-datatable tbody td {
+            border-color: #bbb;
+        }
+
+        div[id="formEdit:growl_container"] {
+            position:absolute;
+            top:40%;
+            left:40%;
+        }
+    </style>
+
+    <style type="text/css">
+        div[id="ComisionEditForm:growl_container"] {
+            position:absolute;
+            top:calc(40% - 180px);
+            left:calc(50% - 170px);
+        }
+    </style>
+
+    <h:form id="ComisionEditForm">
+        <p:growl autoUpdate="true" id="growl"/>
+
+        <p:panel>
+            <f:facet name="header" class="header"> 
+                <div style="text-align: left;">
+                    #{titulo}
+                </div>
+            </f:facet>
+
+            <table>
+                <tr>
+                    <td valign="bottom" align="left" width="50%">
+                        <p:button value="Atras" outcome="List">
+                        </p:button>
+
+                        <p:commandButton value="Guardar"  action="#{comisionController.guardar()}" update="@(.growl)" rendered="#{not(contexto == 'vista')}"/>
+                        <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty comisionController.selected}" outcome="Edit" rendered="#{(contexto == 'vista')}">
+                            <f:param name="id" value="#{comisionController.selected.id}"/>
+                        </p:button>
+                    </td>
+                    <td valign="bottom" align="right" width="50%">
+
+                    </td>
+                </tr>
+            </table>
+
+        </p:panel>
+
+        <div class="hoja">
+
+
+            <p:panelGrid style="width: 50%">
+
+                <p:row>
+                    <p:column class="fondoColumna1">
+                        <h:outputText value="Nombre:" style="font-size: 10pt;font-weight: bold"/>
+                    </p:column>
+                    <p:column>
+                        <h:inputText value="#{comisionController.selected.nombre}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
+                        <h:outputText value="#{comisionController.selected.nombre}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                    </p:column>
+                    <p:column rendered="#{not(contexto == 'creacion')}" class="fondoColumna1">
+                        <h:outputText value="Estado:" style="font-size: 10pt;font-weight: bold"/>
+                    </p:column>
+                    <p:column rendered="#{not(contexto == 'creacion')}">
+                        <h:selectOneMenu value="#{comisionController.selected.estado}"  style="padding: 3px;font-size: 10pt;" rendered="#{(contexto == 'edicion')}">
+                            <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO"/>
+                            <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="#{comisionController.selected.estado}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                    </p:column>
+
+                </p:row>
+
+                <p:row>
+                    <p:column class="fondoColumna1">
+                        <h:outputText value="Camara:" style="font-size: 10pt;font-weight: bold"/>
+                    </p:column>
+                    <p:column rendered="#{not(contexto == 'creacion')}" colspan="3">
+                        <h:selectOneMenu value="#{comisionController.selected.camara}"  style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}">
+                            <f:selectItem itemLabel="CAMARA DE DIPUTADOS" itemValue="CAMARA DE DIPUTADOS"/>
+                            <f:selectItem itemLabel="CAMARA DE SENADORES" itemValue="CAMARA DE SENADORES"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="#{comisionController.selected.camara}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                    </p:column>
+
+                    <p:column rendered="#{(contexto == 'creacion')}">
+                        <h:selectOneMenu value="#{comisionController.selected.camara}"  style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}">
+                            <f:selectItem itemLabel="CAMARA DE DIPUTADOS" itemValue="CAMARA DE DIPUTADOS"/>
+                            <f:selectItem itemLabel="CAMARA DE SENADORES" itemValue="CAMARA DE SENADORES"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="#{comisionController.selected.camara}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column class="fondoColumna1">
+                        <h:outputText value="Mesa:" style="font-size: 10pt;font-weight: bold"/>
+                    </p:column>
+                    <p:column rendered="#{not(contexto == 'creacion')}" colspan="3">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Presidente:" style="font-size: 10pt;font-weight: bold"/>
+                            <h:inputText value="#{comisionController.selected.presidente}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
+                            <h:outputText value="#{comisionController.selected.presidente}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                            <h:outputText value="Vice Presidente:" style="font-size: 10pt;font-weight: bold"/>
+                            <h:inputText value="#{comisionController.selected.vicepresidente}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
+                            <h:outputText value="#{comisionController.selected.vicepresidente}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                            <h:outputText value="Secretario:" style="font-size: 10pt;font-weight: bold"/>
+                            <h:inputText value="#{comisionController.selected.secretario}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
+                            <h:outputText value="#{comisionController.selected.secretario}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                        </h:panelGrid>
+                    </p:column>
+
+                    <p:column rendered="#{(contexto == 'creacion')}">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Presidente:" style="font-size: 10pt;font-weight: bold"/>
+                            <h:inputText value="#{comisionController.selected.presidente}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
+                            <h:outputText value="#{comisionController.selected.presidente}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                            <h:outputText value="Vice Presidente:" style="font-size: 10pt;font-weight: bold"/>
+                            <h:inputText value="#{comisionController.selected.vicepresidente}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
+                            <h:outputText value="#{comisionController.selected.vicepresidente}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                            <h:outputText value="Secretario:" style="font-size: 10pt;font-weight: bold"/>
+                            <h:inputText value="#{comisionController.selected.secretario}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
+                            <h:outputText value="#{comisionController.selected.secretario}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                        </h:panelGrid>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column class="fondoColumna1">
+                        <h:outputText value="Miembros:" style="font-size: 10pt;font-weight: bold"/>
+                    </p:column>
+                    <p:column rendered="#{not(contexto == 'creacion')}" colspan="3">
+                        <p:outputPanel style="padding: 0px!important;" styleClass="panelMiembros">
+
+                            <table width="100%" style="margin: 0;padding: 0">
+                                <tr>
+                                    <td width="100%">
+                                        <h:inputTextarea value="#{comisionController.miembroNuevo.nombre}" style="width: 90%;padding: 5px" cols="2" id="nuevoMiembro" rendered="#{not(contexto == 'vista')}"/>
+                                        <p:watermark for="nuevoMiembro" value="Ingrese un nuevo miembro."/>
+                                    </td>
+                                    <td align="center">
+                                        <p:commandLink action="#{comisionController.addMiembro()}" update="@(.panelMiembros)" onfocus="this.children[0].setAttribute('src', '#{resource['img/plus_green.png']}')"
+                                                       onblur="this.children[0].setAttribute('src', '#{resource['img/plus.png']}')" rendered="#{not(contexto == 'vista')}">
+                                            <img src="#{resource['img/plus.png']}" width='32' height='32' onmouseover="this.setAttribute('src', '#{resource['img/plus_green.png']}');"
+                                                 onmouseout="this.setAttribute('src', '#{resource['img/plus.png']}');"/>
+                                        </p:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <p:separator style="margin-bottom: 5px; margin-top: 5px" rendered="#{not(contexto == 'vista')}"/>
+                                    </td>
+                                </tr>
+                                <ui:repeat value="#{comisionController.selected.miembros}" var="m">
+                                    <tr>
+                                        <td width="100%">
+                                            <h:inputTextarea value="#{m.nombre}" style="width: 90%;padding: 5px" cols="3" rendered="#{not(contexto == 'vista')}"/><br/>
+                                            <h:outputText value="#{m.nombre}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                                        </td>
+                                        <td align="center">
+                                            <p:commandLink value="X" action="#{comisionController.removeMiembro(m)}" update="@(.panelMiembros)" rendered="#{not(contexto == 'vista')}"/>
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+                            </table>
+
+                        </p:outputPanel>
+                    </p:column>
+
+                    <p:column rendered="#{(contexto == 'creacion')}">
+                        <p:outputPanel style="padding: 0px!important;" styleClass="panelMiembros2">
+
+                            <table width="100%" style="margin: 0;padding: 0">
+                                <tr>
+                                    <td width="100%">
+                                        <h:inputTextarea value="#{comisionController.miembroNuevo.nombre}" style="width: 90%;padding: 5px" cols="2" id="nuevoMiembro2" rendered="#{not(contexto == 'vista')}"/>
+                                        <p:watermark for="nuevoMiembro2" value="Ingrese un nuevo miembro."/>
+                                    </td>
+                                    <td align="center">
+                                        <p:commandLink action="#{comisionController.addMiembro()}" update="@(.panelMiembros2)" onfocus="this.children[0].setAttribute('src', '#{resource['img/plus_green.png']}')"
+                                                       onblur="this.children[0].setAttribute('src', '#{resource['img/plus.png']}')" rendered="#{not(contexto == 'vista')}">
+                                            <img src="#{resource['img/plus.png']}" width='32' height='32' onmouseover="this.setAttribute('src', '#{resource['img/plus_green.png']}');"
+                                                 onmouseout="this.setAttribute('src', '#{resource['img/plus.png']}');"/>
+                                        </p:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <p:separator style="margin-bottom: 5px; margin-top: 5px" rendered="#{not(contexto == 'vista')}"/>
+                                    </td>
+                                </tr>
+                                <ui:repeat value="#{comisionController.selected.miembros}" var="m">
+                                    <tr>
+                                        <td width="100%">
+                                            <h:inputTextarea value="#{m.nombre}" style="width: 90%;padding: 5px" cols="3" rendered="#{not(contexto == 'vista')}"/><br/>
+                                            <h:outputText value="#{m.nombre}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                                        </td>
+                                        <td align="center">
+                                            <p:commandLink value="X" action="#{comisionController.removeMiembro(m)}" update="@(.panelMiembros2)" rendered="#{not(contexto == 'vista')}"/>
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+                            </table>
+
+                        </p:outputPanel>
+                    </p:column>
+                </p:row>
+
+
+
+            </p:panelGrid>
+        </div>
+
+
+    </h:form>
+
+</ui:composition>

@@ -1,6 +1,7 @@
 package py.com.palermo.proyectosgob.web;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +14,8 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.view.ViewScoped;
 import py.com.palermo.proyectosgob.dao.ComisionFacade;
 import py.com.palermo.proyectosgob.persistencia.Comision;
+import py.com.palermo.proyectosgob.persistencia.Miembro;
+import py.com.palermo.proyectosgob.web.util.JsfUtil;
 
 @Named("comisionController")
 @ViewScoped
@@ -20,9 +23,29 @@ public class ComisionController implements Serializable {
 
     @EJB
     private ComisionFacade ejbFacade;
-    private List<Comision> items = null;
+    private List<Comision> itemsDiputados = null;
+    private List<Comision> itemsSenadores = null;
     private Comision selected;
+    private Miembro miembroNuevo;
     private long id;
+
+    public void cargaDatos() {
+        if (id > 0) {
+            selected = ejbFacade.find(id);
+        }
+    }
+
+    public Miembro getMiembroNuevo() {
+        if (miembroNuevo == null) {
+            miembroNuevo = new Miembro();
+            miembroNuevo.setComision(selected);
+        }
+        return miembroNuevo;
+    }
+
+    public void setMiembroNuevo(Miembro miembroNuevo) {
+        this.miembroNuevo = miembroNuevo;
+    }
 
     public long getId() {
         return id;
@@ -36,6 +59,10 @@ public class ComisionController implements Serializable {
     }
 
     public Comision getSelected() {
+        if (selected == null) {
+            selected = new Comision();
+            initializeEmbeddableKey();
+        }
         return selected;
     }
 
@@ -53,17 +80,55 @@ public class ComisionController implements Serializable {
         return ejbFacade;
     }
 
+    public String guardar() {
+        try {
+            ejbFacade.edit(selected);
+            JsfUtil.addSuccessMessage("El proyecto se guardo exitosamente!");
+        } catch (Exception e) {
+
+        }
+        return "List.xhtml?faces-redirect=true";
+    }
+
+    public void addMiembro() {
+        if (selected.getMiembros() == null) {
+            selected.setMiembros(new ArrayList<Miembro>());
+        }
+        miembroNuevo.setComision(selected);
+        selected.getMiembros().add(miembroNuevo);
+        miembroNuevo = null;
+    }
+
+    public void removeMiembro(Miembro m) {
+        int index = 0;
+        for (Miembro m2 : selected.getMiembros()) {
+            if (m.getNombre().compareToIgnoreCase(m2.getNombre()) == 0) {
+                break;
+            }
+            index++;
+        }
+
+        selected.getMiembros().remove(index);
+    }
+
     public Comision prepareCreate() {
-        selected = new Comision();
+
         initializeEmbeddableKey();
         return selected;
     }
 
-    public List<Comision> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
+    public List<Comision> getItemsDiputados() {
+        if (itemsDiputados == null) {
+            itemsDiputados = getFacade().findPorCamara("CAMARA DE DIPUTADOS");
         }
-        return items;
+        return itemsDiputados;
+    }
+
+    public List<Comision> getItemsSenadores() {
+        if (itemsSenadores == null) {
+            itemsSenadores = getFacade().findPorCamara("CAMARA DE SENADORES");
+        }
+        return itemsSenadores;
     }
 
     public Comision getComision(java.lang.Long id) {

@@ -15,8 +15,19 @@
         </ui:define>
 
         <ui:define name="body">
-            <h1>Bienvenido #{request.userPrincipal} !</h1>
-
+            <div class="ui-grid ui-grid-responsive" style="height: 100%">
+                <div class="ui-grid-row" style="height: 50%">
+                    <div class="ui-grid-col-6" style="margin: 5px;border: 1px solid #ddd; background-color: white;padding: 5px">
+                        <h3>Iniciativas del Ejecutivo</h3>
+                        <p:separator/>
+                    </div>
+                    <div class="ui-grid-col-6">1</div>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-6">1</div>
+                    <div class="ui-grid-col-6">1</div>
+                </div>
+            </div>
         </ui:define>
     </ui:composition>
 

@@ -7,11 +7,15 @@ package py.com.palermo.proyectosgob.persistencia;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -19,14 +23,34 @@ import javax.persistence.ManyToMany;
  */
 @Entity
 public class Comision implements Serializable {
-    @ManyToMany(mappedBy = "comisiones")
-    private List<Tramite> tramites;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String camara;
+    private String presidente;
+    private String vicepresidente;
+    private String secretario;
+    @OneToMany(mappedBy = "comision", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Miembro> miembros;
+    @ManyToMany(mappedBy = "comisiones")
+    private List<Tramite> tramites;
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
+
+    public Comision() {
+        estado = Estado.ACTIVO;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
 
     public Long getId() {
         return id;
@@ -60,8 +84,38 @@ public class Comision implements Serializable {
         this.tramites = tramites;
     }
 
-    
-    
+    public String getPresidente() {
+        return presidente;
+    }
+
+    public void setPresidente(String presidente) {
+        this.presidente = presidente;
+    }
+
+    public String getVicepresidente() {
+        return vicepresidente;
+    }
+
+    public void setVicepresidente(String vicepresidente) {
+        this.vicepresidente = vicepresidente;
+    }
+
+    public String getSecretario() {
+        return secretario;
+    }
+
+    public void setSecretario(String secretario) {
+        this.secretario = secretario;
+    }
+
+    public List<Miembro> getMiembros() {
+        return miembros;
+    }
+
+    public void setMiembros(List<Miembro> miembros) {
+        this.miembros = miembros;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -86,5 +140,5 @@ public class Comision implements Serializable {
     public String toString() {
         return "py.com.palermo.proyectosgob.persistencia.Comision[ id=" + id + " ]";
     }
-    
+
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="Lista de Comisiones de Diputados"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <style type="text/css">
+                div[id="ComisionListForm:growl_container"] {
+                    position:absolute;
+                    top:calc(40% - 180px);
+                    left:calc(50% - 170px);
+                }
+            </style>
+
+            <h:form id="ComisionListForm">
+                <p:growl autoUpdate="true" id="growl"/>
+                <p:panel header="Lista de Comision">
+                    <p:dataTable id="datalist" value="#{comisionController.itemsDiputados}" var="item"
+                                 selectionMode="single" selection="#{comisionController.selected}"
+                                 widgetVar="userTable"
+                                 rowKey="#{item.id}">
+
+                        <p:ajax event="rowSelect"   update="createButton  editButton viewButton"/>
+                        <p:ajax event="rowUnselect" update="createButton  editButton viewButton"/>
+
+
+                        <p:column filterBy="#{item.nombre}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Nombre"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="CAMARA"/>
+                            </f:facet>
+                            <h:outputText value="#{item.camara}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{item.estado}" filterOptions="#{productorEnums.obtEstados()}" filterMatchMode="exact">
+                            <f:facet name="header">
+                                <h:outputText value="ESTADO"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estado}"/>
+                        </p:column>
+
+                        <f:facet name="header">
+                            <p:button id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" outcome="Create"/>
+                            <p:button id="viewButton"   icon="ui-icon-pencil" value="#{bundle.View}"  disabled="#{empty comisionController.selected}" outcome="View">
+                                <f:param name="id" value="#{comisionController.selected.id}"/>
+                            </p:button>
+                            <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty comisionController.selected}" outcome="Edit">
+                                <f:param name="id" value="#{comisionController.selected.id}"/>
+                            </p:button>
+
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

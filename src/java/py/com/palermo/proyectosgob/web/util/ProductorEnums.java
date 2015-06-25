@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import py.com.palermo.proyectosgob.persistencia.Estado;
 import py.com.palermo.proyectosgob.persistencia.TipoResultado;
 
 /**
@@ -28,5 +29,20 @@ public class ProductorEnums implements Serializable {
         return R;
     }
 
+    public SelectItem[] obtEstados() {
+
+        Estado[] lista = Estado.values();
+
+        int i = 0;
+        SelectItem[] R = new SelectItem[Estado.values().length + 1];
+        R[0] = new SelectItem("", "---");
+        i++;
+        for (Estado e : lista) {
+            R[i++] = new SelectItem(e, e.toString());
+
+        }
+
+        return R;
+    }
 
 }
