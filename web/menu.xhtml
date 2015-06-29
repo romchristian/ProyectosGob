@@ -16,6 +16,11 @@
 
         <p:link  value="Localizar Proyectos" outcome="/main/proyecto/List" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('ver_proyecto'))}"/>
+        
+        <p:link  value="Comisiones de Diputados" outcome="/main/comisionDiputados/List" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('ver_comision'))}"/>
+        <p:link  value="Comisiones de Senadores" outcome="/main/comisionSenadores/List" 
+                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('ver_comision'))}"/>
 
 
     </h:panelGrid>
@@ -28,10 +33,7 @@
     <h:panelGrid columns="1" style="margin-top: 10px;margin-left: 30px;font-size: 9pt">
         <p:link  value="Usuarios" outcome="/main/configuraciones/usuarios/List" 
                  rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
-        <p:link  value="Comisiones de Diputados" outcome="/main/configuraciones/comisionDiputados/List" 
-                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
-        <p:link  value="Comisiones de Senadores" outcome="/main/configuraciones/comisionSenadores/List" 
-                 rendered="#{(request.isUserInRole('admin') or request.isUserInRole('configuraciones'))}"/>
+        
 
     </h:panelGrid>
 

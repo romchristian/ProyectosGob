@@ -14,13 +14,13 @@
         </f:metadata>
 
         <ui:define name="title">
-            <h:outputText value="Edición de Comisión"></h:outputText>
+            <h:outputText value="Vista de Comisión"></h:outputText>
         </ui:define>
 
         <ui:define name="body">
-            <ui:include src="/main/configuraciones/comisionDiputados/cuerpo.xhtml">
-                <ui:param name="titulo" value="Edición de Comisión"/>
-                <ui:param name="contexto" value="edicion"/>
+            <ui:include src="/main/comisionDiputados/cuerpo.xhtml">
+                <ui:param name="titulo" value="Vista de Comisión"/>
+                <ui:param name="contexto" value="vista"/>
             </ui:include>
         </ui:define>
     </ui:composition>

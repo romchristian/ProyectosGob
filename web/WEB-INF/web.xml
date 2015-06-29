@@ -100,6 +100,38 @@
             <role-name>configuraciones</role-name>
         </auth-constraint>
     </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintVerComision</display-name>
+        <web-resource-collection>
+            <web-resource-name>VerComision</web-resource-name>
+            <description/>
+            <url-pattern>/main/comisionDiputados/List</url-pattern>
+            <url-pattern>/main/comisionDiputados/View</url-pattern>
+            <url-pattern>/main/comisionSenadores/List</url-pattern>
+            <url-pattern>/main/comisionSenadores/View</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>ver_comision</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ConstraintEditarComision</display-name>
+        <web-resource-collection>
+            <web-resource-name>EditarComision</web-resource-name>
+            <description/>
+            <url-pattern>/main/comisionDiputados/Create</url-pattern>
+            <url-pattern>/main/comisionDiputados/Edit</url-pattern>
+            <url-pattern>/main/comisionSenadores/Create</url-pattern>
+            <url-pattern>/main/comisionSenadores/Edit</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
+            <role-name>editar_comision</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>NandePyJDBC</realm-name>
@@ -123,5 +155,13 @@
     <security-role>
         <description/>
         <role-name>configuraciones</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>ver_comision</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>editar_comision</role-name>
     </security-role>
 </web-app>

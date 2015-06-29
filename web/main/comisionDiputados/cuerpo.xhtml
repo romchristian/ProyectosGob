@@ -109,7 +109,8 @@
                         </p:button>
 
                         <p:commandButton value="Guardar"  action="#{comisionController.guardar()}" update="@(.growl)" rendered="#{not(contexto == 'vista')}" icon="ui-icon-disk"/>
-                        <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty comisionController.selected}" outcome="Edit" rendered="#{(contexto == 'vista')}">
+                        <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty comisionController.selected}" outcome="Edit" 
+                                  rendered="#{((contexto == 'vista') and (request.isUserInRole('admin') or request.isUserInRole('editar_comision')))}">
                             <f:param name="id" value="#{comisionController.selected.id}"/>
                         </p:button>
                     </td>
