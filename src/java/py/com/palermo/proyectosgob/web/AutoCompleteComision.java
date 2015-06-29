@@ -13,7 +13,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import py.com.palermo.proyectosgob.dao.ComisionFacade;
 import py.com.palermo.proyectosgob.persistencia.Comision;
-
+import py.com.palermo.proyectosgob.persistencia.Estado;
 
 /**
  *
@@ -54,7 +54,7 @@ public class AutoCompleteComision implements Serializable {
         List<Comision> sugerencias = new ArrayList<>();
 
         for (Comision c : getLista()) {
-            
+
             String cadenaAComparar = c.getNombre();
             if (cadenaAComparar.trim().toUpperCase().startsWith(query.toUpperCase().trim())) {
                 sugerencias.add(c);
@@ -63,9 +63,9 @@ public class AutoCompleteComision implements Serializable {
 
         return sugerencias;
     }
-    
+
     public List<Comision> getLista() {
-        if(lista == null || lista.isEmpty()){
+        if (lista == null || lista.isEmpty()) {
             carga(camara);
         }
         return lista;
@@ -74,13 +74,13 @@ public class AutoCompleteComision implements Serializable {
     public void setLista(List<Comision> lista) {
         this.lista = lista;
     }
-    
-    public void reload(){
+
+    public void reload() {
         carga(camara);
     }
-    
-    private void carga(String camara){
-        lista = dao.findPorCamara(camara);
+
+    private void carga(String camara) {
+        lista = dao.findPorCamara(camara, Estado.ACTIVO);
     }
 
 }

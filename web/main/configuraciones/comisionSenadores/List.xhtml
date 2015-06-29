@@ -31,8 +31,8 @@
                                  widgetVar="userTable"
                                  rowKey="#{item.id}">
 
-                        <p:ajax event="rowSelect"   update="createButton  editButton viewButton"/>
-                        <p:ajax event="rowUnselect" update="createButton  editButton viewButton"/>
+                        <p:ajax event="rowSelect"   update="createButton  editButton viewButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton  editButton viewButton deleteButton"/>
 
 
                         <p:column filterBy="#{item.nombre}" filterMatchMode="contains">
@@ -47,7 +47,7 @@
                             </f:facet>
                             <h:outputText value="#{item.camara}"/>
                         </p:column>
-                        
+
                         <p:column filterBy="#{item.estado}" filterOptions="#{productorEnums.obtEstados()}" filterMatchMode="exact">
                             <f:facet name="header">
                                 <h:outputText value="ESTADO"/>
@@ -57,12 +57,21 @@
 
                         <f:facet name="header">
                             <p:button id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" outcome="Create"/>
-                            <p:button id="viewButton"   icon="ui-icon-pencil" value="#{bundle.View}"  disabled="#{empty comisionController.selected}" outcome="View">
+                            <p:button id="viewButton"   icon="ui-icon-search" value="#{bundle.View}"  disabled="#{not comisionController.haySeleccion()}" outcome="View">
                                 <f:param name="id" value="#{comisionController.selected.id}"/>
                             </p:button>
-                            <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty comisionController.selected}" outcome="Edit">
+                            <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{not comisionController.haySeleccion()}" outcome="Edit">
                                 <f:param name="id" value="#{comisionController.selected.id}"/>
                             </p:button>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash" value="Eliminar" disabled="#{not comisionController.haySeleccion()}" 
+                                             actionListener="#{comisionController.remover()}"
+                                             update="datalist">
+                                <p:confirm header="Confirmación" message="Desea eliminar esta comisión?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                <p:commandButton value="Aceptar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
 
                         </f:facet>
                     </p:dataTable>

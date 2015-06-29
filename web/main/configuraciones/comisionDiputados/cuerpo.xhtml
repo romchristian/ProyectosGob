@@ -45,6 +45,12 @@
             font-weight: bold;
             color: white;
         }
+        
+        .fondoColumnaGris{
+            background-color: #ddd;
+            font-weight: bold;
+            
+        }
 
         .ui-datalist-item{
             margin-top: 5px;
@@ -102,7 +108,7 @@
                         <p:button value="Atras" outcome="List">
                         </p:button>
 
-                        <p:commandButton value="Guardar"  action="#{comisionController.guardar()}" update="@(.growl)" rendered="#{not(contexto == 'vista')}"/>
+                        <p:commandButton value="Guardar"  action="#{comisionController.guardar()}" update="@(.growl)" rendered="#{not(contexto == 'vista')}" icon="ui-icon-disk"/>
                         <p:button id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"  disabled="#{empty comisionController.selected}" outcome="Edit" rendered="#{(contexto == 'vista')}">
                             <f:param name="id" value="#{comisionController.selected.id}"/>
                         </p:button>
@@ -118,7 +124,7 @@
         <div class="hoja">
 
 
-            <p:panelGrid style="width: 50%">
+            <p:panelGrid style="width: 80%">
 
                 <p:row>
                     <p:column class="fondoColumna1">
@@ -167,17 +173,37 @@
                         <h:outputText value="Mesa:" style="font-size: 10pt;font-weight: bold"/>
                     </p:column>
                     <p:column rendered="#{not(contexto == 'creacion')}" colspan="3">
-                        <h:panelGrid columns="2">
-                            <h:outputText value="Presidente:" style="font-size: 10pt;font-weight: bold"/>
-                            <h:inputText value="#{comisionController.selected.presidente}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
-                            <h:outputText value="#{comisionController.selected.presidente}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
-                            <h:outputText value="Vice Presidente:" style="font-size: 10pt;font-weight: bold"/>
-                            <h:inputText value="#{comisionController.selected.vicepresidente}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
-                            <h:outputText value="#{comisionController.selected.vicepresidente}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
-                            <h:outputText value="Secretario:" style="font-size: 10pt;font-weight: bold"/>
-                            <h:inputText value="#{comisionController.selected.secretario}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
-                            <h:outputText value="#{comisionController.selected.secretario}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
-                        </h:panelGrid>
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column class="fondoColumnaGris">
+                                    <h:outputText value="Presidente:" style="font-size: 10pt;font-weight: bold"/>
+                                </p:column>
+                                <p:column>
+                                    <h:inputText value="#{comisionController.selected.presidente}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
+                                    <h:outputText value="#{comisionController.selected.presidente}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column class="fondoColumnaGris">
+                                    <h:outputText value="Vice Presidente:" style="font-size: 10pt;font-weight: bold"/>
+                                </p:column>
+                                <p:column>
+                                    <h:inputText value="#{comisionController.selected.vicepresidente}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
+                                    <h:outputText value="#{comisionController.selected.vicepresidente}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column class="fondoColumnaGris">
+                                    <h:outputText value="Secretario:" style="font-size: 10pt;font-weight: bold"/>
+                                </p:column>
+                                <p:column>
+                                    <h:inputText value="#{comisionController.selected.secretario}" size="40" style="padding: 3px;font-size: 10pt;" rendered="#{not(contexto == 'vista')}"/>
+                                    <h:outputText value="#{comisionController.selected.secretario}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
                     </p:column>
 
                     <p:column rendered="#{(contexto == 'creacion')}">
@@ -205,7 +231,7 @@
                             <table width="100%" style="margin: 0;padding: 0">
                                 <tr>
                                     <td width="100%">
-                                        <h:inputTextarea value="#{comisionController.miembroNuevo.nombre}" style="width: 90%;padding: 5px" cols="2" id="nuevoMiembro" rendered="#{not(contexto == 'vista')}"/>
+                                        <h:inputText value="#{comisionController.miembroNuevo.nombre}" style="width: 90%;padding: 3px"  id="nuevoMiembro" rendered="#{not(contexto == 'vista')}"/>
                                         <p:watermark for="nuevoMiembro" value="Ingrese un nuevo miembro."/>
                                     </td>
                                     <td align="center">
@@ -224,7 +250,7 @@
                                 <ui:repeat value="#{comisionController.selected.miembros}" var="m">
                                     <tr>
                                         <td width="100%">
-                                            <h:inputTextarea value="#{m.nombre}" style="width: 90%;padding: 5px" cols="3" rendered="#{not(contexto == 'vista')}"/><br/>
+                                            <h:inputText value="#{m.nombre}" style="width: 90%;padding: 3px"  rendered="#{not(contexto == 'vista')}"/><br/>
                                             <h:outputText value="#{m.nombre}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
                                         </td>
                                         <td align="center">
@@ -243,7 +269,7 @@
                             <table width="100%" style="margin: 0;padding: 0">
                                 <tr>
                                     <td width="100%">
-                                        <h:inputTextarea value="#{comisionController.miembroNuevo.nombre}" style="width: 90%;padding: 5px" cols="2" id="nuevoMiembro2" rendered="#{not(contexto == 'vista')}"/>
+                                        <h:inputText value="#{comisionController.miembroNuevo.nombre}" style="width: 90%;padding: 3px"  id="nuevoMiembro2" rendered="#{not(contexto == 'vista')}"/>
                                         <p:watermark for="nuevoMiembro2" value="Ingrese un nuevo miembro."/>
                                     </td>
                                     <td align="center">
@@ -262,7 +288,7 @@
                                 <ui:repeat value="#{comisionController.selected.miembros}" var="m">
                                     <tr>
                                         <td width="100%">
-                                            <h:inputTextarea value="#{m.nombre}" style="width: 90%;padding: 5px" cols="3" rendered="#{not(contexto == 'vista')}"/><br/>
+                                            <h:inputText value="#{m.nombre}" style="width: 90%;padding: 3px"  rendered="#{not(contexto == 'vista')}"/><br/>
                                             <h:outputText value="#{m.nombre}" style="font-size: 10pt;font-weight: bold" rendered="#{(contexto == 'vista')}"/>
                                         </td>
                                         <td align="center">

@@ -29,6 +29,15 @@ public class ComisionController implements Serializable {
     private Miembro miembroNuevo;
     private long id;
 
+    public boolean haySeleccion() {
+        boolean R = false;
+
+        if (selected != null && selected.getId() != null && selected.getId() > 0) {
+            R = true;
+        }
+        return R;
+    }
+
     public void cargaDatos() {
         if (id > 0) {
             selected = ejbFacade.find(id);
@@ -83,11 +92,21 @@ public class ComisionController implements Serializable {
     public String guardar() {
         try {
             ejbFacade.edit(selected);
-            JsfUtil.addSuccessMessage("El proyecto se guardo exitosamente!");
+            JsfUtil.addSuccessMessage("La comisión se guardo exitosamente!");
         } catch (Exception e) {
 
         }
         return "List.xhtml?faces-redirect=true";
+    }
+
+    public void remover() {
+        try {
+            ejbFacade.remover(selected);
+            JsfUtil.addSuccessMessage("La comisión se eliminó exitosamente!");
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e.getMessage());
+        }
+
     }
 
     public void addMiembro() {
